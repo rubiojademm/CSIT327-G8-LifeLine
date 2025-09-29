@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Register</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password1" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
+    </form>
+    <p style="text-align:center; margin-top:1rem;">Already have an account? <a href="{% url 'login' %}" style="color:#27ae60;">Login</a></p>
+</div>
+{% endblock %}

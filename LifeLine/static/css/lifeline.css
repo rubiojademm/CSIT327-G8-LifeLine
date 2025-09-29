@@ -1,0 +1,80 @@
+body {
+    background: #f6fff6;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background: #2ecc40;
+    color: #fff;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+}
+
+.navbar {
+    background: #27ae60;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.navbar a.active, .navbar a:hover {
+    background: #219150;
+}
+
+.form-container {
+    background: #fff;
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(46, 204, 64, 0.1);
+}
+
+.form-container h2 {
+    color: #27ae60;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #b2f2b2;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #219150;
+}
+
+.motivation {
+    color: #27ae60;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 1rem;
+}
