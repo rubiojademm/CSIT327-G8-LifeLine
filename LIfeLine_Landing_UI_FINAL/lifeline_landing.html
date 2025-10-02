@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine - Track Your Growth Journey</title>
+    <style>
+        /* ==================== GLOBAL STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        /* ==================== HEADER / NAVIGATION ==================== */
+        .header {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #22c55e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .sign-in-btn {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .sign-in-btn:hover {
+            background: #f1f1f1;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 60px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+        }
+
+        .hero-title .highlight {
+            color: #22c55e;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #22c55e;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #333;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid #e5e5e5;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        /* ==================== FEATURES SECTION ==================== */
+        .features-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #e5e5e5;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: #22c55e;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .feature-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            background: #22c55e;
+            color: white;
+            padding: 80px 20px;
+            margin: 60px 0 0;
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .btn-white {
+            background: white;
+            color: #22c55e;
+            padding: 16px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==================== MODAL STYLES ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #f1f1f1;
+            color: #333;
+        }
+
+        /* ==================== AUTH TABS ==================== */
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 6px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #22c55e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================== FORM STYLES ==================== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: #22c55e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ==================== PASSWORD STRENGTH INDICATOR ==================== */
+        .password-strength {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* ==================== ERROR MESSAGES ==================== */
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .cta-title {
+                font-size: 32px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== HEADER ==================== -->
+    <div class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">L</div>
+                <div class="logo-text">LifeLine</div>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="sign-in-btn" onclick="openModal(); return false;">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <div class="hero-section">
+        <h1 class="hero-title">Track Your <span class="highlight">Personal Growth</span> Journey</h1>
+        <p class="hero-subtitle">Set meaningful goals, earn achievements, and visualize your progress with LifeLine - the simple, clean, and motivating personal growth tracker.</p>
+        
+        <div class="cta-buttons">
+            <button class="btn-primary" onclick="openModal('register')">
+                Get Started Free
+                <span>→</span>
+            </button>
+            <button class="btn-secondary">Learn More</button>
+        </div>
+    </div>
+
+    <!-- ==================== FEATURES SECTION ==================== -->
+    <div class="features-section">
+        <div class="features-grid">
+            <!-- Feature 1: Set & Track Goals -->
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Set & Track Goals</h3>
+                <p class="feature-description">Define clear objectives and monitor your progress with visual indicators.</p>
+            </div>
+
+            <!-- Feature 2: Earn Achievements -->
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-title">Earn Achievements</h3>
+                <p class="feature-description">Unlock badges and milestones as you complete your personal growth journey.</p>
+            </div>
+
+            <!-- Feature 3: Monitor Growth -->
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 class="feature-title">Monitor Growth</h3>
+                <p class="feature-description">Visualize your progress with detailed analytics and growth summaries.</p>
+            </div>
+
+            <!-- Feature 4: Stay Motivated -->
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Stay Motivated</h3>
+                <p class="feature-description">Get encouragement and maintain momentum with streak tracking.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CTA SECTION ==================== -->
+    <div class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to Transform Your Life?</h2>
+            <p class="cta-description">Join thousands of people who are already tracking their growth and achieving their goals with LifeLine.</p>
+            <button class="btn-white" onclick="openModal('register')">
+                Start Your Journey Today
+                <span>→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== AUTH MODAL ==================== -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            
+            <!-- Auth Tabs -->
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-tab" class="tab-content active">
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="you@example.com" required>
+                        <div class="error-message" id="login-email-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                        <div class="error-message" id="login-password-error"></div>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                    <div class="form-footer">
+                        Don't have an account? <a href="#" onclick="switchTab('register'); return false;">Create one</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-tab" class="tab-content">
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" placeholder="John Doe" required>
+                        <div class="error-message" id="register-name-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" placeholder="you@example.com" required>
+                        <div class="error-message" id="register-email-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" placeholder="Create a strong password" required oninput="checkPasswordStrength(this.value)">
+                        <div class="password-strength" id="password-strength">
+                            <div class="password-strength-bar" id="password-strength-bar"></div>
+                        </div>
+                        <div class="error-message" id="register-password-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" placeholder="Confirm your password" required>
+                        <div class="error-message" id="register-confirm-error"></div>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Account</button>
+                    <div class="form-footer">
+                        Already have an account? <a href="#" onclick="switchTab('login'); return false;">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ========== MODAL FUNCTIONS ==========
+        function openModal(tab = 'login') {
+            document.getElementById('authModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (tab === 'register') {
+                switchTab('register');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('authModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // ========== TAB SWITCHING ==========
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('login-tab').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('register-tab').classList.add('active');
+            }
+        }
+
+        // ========== PASSWORD STRENGTH CHECKER ==========
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthContainer = document.getElementById('password-strength');
+            
+            if (password.length === 0) {
+                strengthContainer.style.display = 'none';
+                return;
+            }
+            
+            strengthContainer.style.display = 'block';
+            
+            let strength = 0;
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+            if (password.match(/[0-9]/)) strength += 25;
+            if (password.match(/[^a-zA-Z0-9]/)) strength += 25;
+            
+            strengthBar.style.width = strength + '%';
+            
+            if (strength <= 25) {
+                strengthBar.style.background = '#e74c3c';
+            } else if (strength <= 50) {
+                strengthBar.style.background = '#f39c12';
+            } else if (strength <= 75) {
+                strengthBar.style.background = '#3498db';
+            } else {
+                strengthBar.style.background = '#2ecc71';
+            }
+        }
+
+        // ========== EMAIL VALIDATION ==========
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // ========== LOGIN FORM HANDLER ==========
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            let valid = true;
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                document.getElementById('login-email-error').textContent = 'Please enter a valid email address';
+                document.getElementById('login-email-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('login-email-error').style.display = 'none';
+            }
+            
+            // Validate password
+            if (password.length < 6) {
+                document.getElementById('login-password-error').textContent = 'Password must be at least 6 characters';
+                document.getElementById('login-password-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('login-password-error').style.display = 'none';
+            }
+            
+            if (valid) {
+                alert('Login functionality will be connected to Django backend!\n\nEmail: ' + email);
+                // Here you would send data to Django backend
+            }
+        }
+
+        // ========== REGISTER FORM HANDLER ==========
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            let valid = true;
+            
+            // Validate name
+            if (name.length < 2) {
+                document.getElementById('register-name-error').textContent = 'Name must be at least 2 characters';
+                document.getElementById('register-name-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('register-name-error').style.display = 'none';
+            }
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                document.getElementById('register-email-error').textContent = 'Please enter a valid email address';
+                document.getElementById('register-email-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('register-email-error').style.display = 'none';
+            }
+            
+            // Validate password
+            if (password.length < 8) {
+                document.getElementById('register-password-error').textContent = 'Password must be at least 8 characters';
+                document.getElementById('register-password-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('register-password-error').style.display = 'none';
+            }
+            
+            // Validate password match
+            if (password !== confirm) {
+                document.getElementById('register-confirm-error').textContent = 'Passwords do not match';
+                document.getElementById('register-confirm-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('register-confirm-error').style.display = 'none';
+            }
+            
+            if (valid) {
+                alert('Registration successful!\n\nName: ' + name + '\nEmail: ' + email + '\n\nThis will be connected to Django backend.');
+                // Here you would send data to Django backend
+            }
+        }
+    </script>
+</body>
+</html>
