@@ -1,0 +1,113 @@
+body {
+    background: #f6fff6;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background: #2ecc40;
+    color: #fff;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+}
+
+.navbar {
+    background: #27ae60;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.navbar a.active, .navbar a:hover {
+    background: #219150;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* ensures padding doesn’t break width */
+}
+
+.form-container h2 {
+    color: #27ae60;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #b2f2b2;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #219150;
+}
+
+.motivation {
+    color: #27ae60;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Messages and alert section */
+.alert {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Placeholder navbar buttons */
+a.disabled {
+  pointer-events: none;
+  color: rgb(235, 235, 235);
+  text-decoration: none;
+}
