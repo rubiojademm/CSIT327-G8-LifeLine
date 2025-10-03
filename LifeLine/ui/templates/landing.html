@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Welcome to LifeLine</h2>
+    <p class="motivation">Track your personal growth, set goals, and celebrate achievements. Start your journey today!</p>
+    <div style="text-align:center; margin-top:2rem;">
+        <a href="{% url 'login' %}"><button>Login</button></a>
+        <a href="{% url 'register' %}"><button style="margin-left:1rem;">Register</button></a>
+    </div>
+</div>
+{% endblock %}
