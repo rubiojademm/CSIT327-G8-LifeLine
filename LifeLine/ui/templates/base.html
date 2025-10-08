@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="/static/css/lifeline.css">
 </head>
 <body>
-    <div class="header">
-        <h1>LifeLine</h1>
-    </div>
     <nav class="navbar">
         <a href="{% url 'landing' %}" class="{% if request.resolver_match.url_name == 'landing' %}active{% endif %}">Home</a>
         <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
