@@ -13,11 +13,12 @@ from .forms import RegisterForm
 
 def register(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
+        password1 = request.POST.get("password1", "")
+        password2 = request.POST.get("password2", "")
 
+        # Keep user input so it persists when an error happens
         context = {
             "username": username,
             "email": email,
@@ -25,36 +26,39 @@ def register(request):
 
         has_error = False
 
+        # Validation checks
         if password1 != password2:
-            messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match.")
             has_error = True
 
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already taken")
+            messages.error(request, "Username already taken.")
             has_error = True
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already registered")
+            messages.error(request, "Email already registered.")
             has_error = True
 
-        # If any error occurred, redisplay form with values
+        # If there were any errors, reload the same page with messages
         if has_error:
             return render(request, "register.html", context)
 
-        # Otherwise create the user
+        # Otherwise create the user and redirect
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
         messages.success(request, f"Account created for {username}! You can now log in.")
         return redirect("login")
 
+    # GET request
     return render(request, "register.html")
 
 def login_view(request):
+    username = ""
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = request.POST.get("username", "")
+        password = request.POST.get("password", "")
 
-        context = {"username": username}  # preserve username if login fails
+        context = {"username": username}  # preserve input on error
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -62,9 +66,12 @@ def login_view(request):
             return redirect("dashboard")
         else:
             messages.error(request, "Invalid username or password.")
+            # Re-render the login page with username retained
             return render(request, "login.html", context)
 
-    return render(request, "login.html")
+    # When page first loads (GET)
+    return render(request, "login.html", {"username": username})
+
 
 def logout_view(request):
     auth_logout(request)
