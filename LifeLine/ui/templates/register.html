@@ -1,29 +1,62 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<div class="form-container">
-    <h2>Register</h2>
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
 
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password1" placeholder="Password" required>
-        <input type="password" name="password2" placeholder="Confirm Password" required>
-        <button type="submit">Register</button>
+<div class="register-page">
+  <div class="register-card">
+    <div class="register-header">
+      <div class="logo">
+        <div class="logo-icon">🎯</div>
+        <h1>LifeLine</h1>
+      </div>
+      <h2>Join LifeLine</h2>
+      <p>Create your account to start tracking your growth</p>
+    </div>
+
+    <form method="post" class="register-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required
+               value="{{ username|default:'' }}">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required
+               value="{{ email|default:'' }}">
+      </div>
+
+      <div class="form-group">
+        <label for="password1">Password</label>
+        <input type="password" name="password1" placeholder="Create a password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password2">Confirm Password</label>
+        <input type="password" name="password2" placeholder="Confirm your password" required>
+      </div>
+
+      <button type="submit" class="btn-primary">Create Account</button>
+
+      <div class="messages">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
     </form>
 
-    <!-- Messages/Alerts -->
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <p style="text-align:center; margin-top:1rem;">Already have an account? 
-       <a href="{% url 'login' %}" style="color:#27ae60;">Login</a></p>
+    <div class="register-footer">
+      <p>Already have an account?
+        <a href="{% url 'login' %}">Sign in</a>
+      </p>
+      <a href="{% url 'landing' %}" class="btn-outline">← Back to Home</a>
+    </div>
+  </div>
 </div>
 {% endblock %}
