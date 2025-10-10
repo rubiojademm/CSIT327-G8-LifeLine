@@ -21,6 +21,24 @@ body {
     padding: 1rem 0;
 }
 
+navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #22c55e;
+}
+
+
 .navbar a {
     color: #fff;
     text-decoration: none;
