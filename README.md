@@ -1,12 +1,6 @@
 # LifeLine
 A simple, centralized system that allows users to record meaningful life events and visualize them in a structured timeline by providing
 an organized and interactive platform for logging experiences, visualizing personal progress, and encouraging continuous self-reflection and motivation.
-## Features
-- 
-- 
-- 
-- 
-- 
 ## Installation
 1. Clone the repository
 2. Create virtual environment: `python -m venv env`
@@ -20,3 +14,6 @@ an organized and interactive platform for logging experiences, visualizing perso
 - Django
 - mySQL
 - HTML/CSS/JavaScript
+## Developers
+- Jecie Jade Rubio, Full-stack developer, 23-6808-546
+- Vince Raymund Alerta, Full-stack developer, XX-XXXX-XXX
