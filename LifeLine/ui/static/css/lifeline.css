@@ -27,15 +27,21 @@ navbar-logo {
     gap: 10px;
 }
 
+.navbar-logo {
+    position: absolute;
+    left: 3rem;
+}
+
 .logo-img {
     height: 40px;
     width: auto;
-}
+} 
 
 .logo-text {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    color: #22c55e;
+    text-align: left;
+    color: #fff;
 }
 
 
