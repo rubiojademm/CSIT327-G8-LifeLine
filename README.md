@@ -12,7 +12,7 @@ an organized and interactive platform for logging experiences, visualizing perso
 7. Run server: `python manage.py runserver`
 ## Technology Stack
 - Django
-- mySQL
+- Supabase
 - HTML/CSS/JavaScript
 ## Developers
 - Jecie Jade Rubio, Full-stack developer, jeciejade.rubio@cit.edu
