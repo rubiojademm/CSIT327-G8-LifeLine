@@ -11,7 +11,7 @@ an organized and interactive platform for logging experiences, visualizing perso
 6. Create superuser: `python manage.py createsuperuser`
 7. Run server: `python manage.py runserver`
 ## Technology Stack
-- Django
+- Python/Django
 - Supabase
 - HTML/CSS/JavaScript
 ## Developers
