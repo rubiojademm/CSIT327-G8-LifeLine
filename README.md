@@ -15,5 +15,5 @@ an organized and interactive platform for logging experiences, visualizing perso
 - mySQL
 - HTML/CSS/JavaScript
 ## Developers
-- Jecie Jade Rubio, Full-stack developer, 23-6808-546
-- Vince Raymund Alerta, Full-stack developer, XX-XXXX-XXX
+- Jecie Jade Rubio, Full-stack developer, jeciejade.rubio@cit.edu
+- Vince Raymund Alerta, Full-stack developer, vinceraymund.alerta@cit.edu
