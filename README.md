@@ -12,7 +12,7 @@ an organized and interactive platform for logging experiences, visualizing perso
      - Open .env and update the following:
        
         - Replace YOUR_PASSWORD with your Supabase database password
-        - Replace <project-ref> with your Supabase project reference
+        - Replace < project-ref > with your Supabase project reference
        
 7. Run migrations: `python manage.py migrate`
 8. (Optional) Create superuser: `python manage.py createsuperuser`
