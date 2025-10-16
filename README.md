@@ -10,7 +10,8 @@ an organized and interactive platform for logging experiences, visualizing perso
 5. Set up environment variables
      - Copy the example environment file: `cp .env.example .env`
      - Open .env and update the following:
-       
+
+        - Add your Supabase URL and Service Role Key
         - Replace YOUR_PASSWORD with your Supabase database password
         - Replace < project-ref > with your Supabase project reference
        
