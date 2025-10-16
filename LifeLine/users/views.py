@@ -10,6 +10,75 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegisterForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from supabase import create_client
+from django.conf import settings
+from django.db.models import Q
+
+
+supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
+
+
+def is_admin(user):
+    return user.is_superuser
+
+
+@login_required
+@user_passes_test(is_admin)
+def admin_dashboard(request):
+    if request.method == "POST":
+        action = request.POST.get("action")
+        user_id = request.POST.get("user_id")
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            messages.error(request, "User not found.")
+            return redirect("admin_dashboard")
+
+        # Handle actions
+        if action == "delete":
+            if request.user == user:
+                messages.error(request, "You cannot delete your own account.")
+            else:
+                user.delete()
+                messages.success(request, f"User '{user.username}' deleted successfully.")
+
+        elif action == "deactivate":
+            if not user.is_active:
+                messages.info(request, f"User '{user.username}' is already inactive.")
+            else:
+                user.is_active = False
+                user.save()
+                messages.success(request, f"User '{user.username}' deactivated successfully.")
+
+        elif action == "activate":
+            if user.is_active:
+                messages.info(request, f"User '{user.username}' is already active.")
+            else:
+                user.is_active = True
+                user.save()
+                messages.success(request, f"User '{user.username}' activated successfully.")
+
+        return redirect("admin_dashboard")
+
+    # Handle GET request (search and display users)
+    query = request.GET.get("q", "").strip()
+    if query:
+        users = User.objects.filter(
+            Q(username__icontains=query) | Q(email__icontains=query)
+        ).order_by("id")
+    else:
+        users = User.objects.all().order_by("id")
+
+    user_count = users.count()
+
+    return render(request, "admin_dashboard.html", {
+        "users": users,
+        "query": query,
+        "user_count": user_count,
+    })
+
 
 def register(request):
     if request.method == "POST":
@@ -52,6 +121,7 @@ def register(request):
     # GET request
     return render(request, "register.html")
 
+
 def login_view(request):
     username = ""
     if request.method == "POST":
@@ -76,3 +146,5 @@ def login_view(request):
 def logout_view(request):
     auth_logout(request)
     return redirect("landing")
+
+

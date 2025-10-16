@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('', user_views.landing, name='landing'),
+    path('admin-dashboard/', user_views.admin_dashboard, name='admin_dashboard'),
     path('dashboard/', user_views.dashboard, name='dashboard'),
 ]
