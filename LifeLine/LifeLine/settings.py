@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from supabase import create_client
 import os
 from pathlib import Path
 import dj_database_url
@@ -17,6 +18,11 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env
 load_dotenv()
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,7 +89,7 @@ WSGI_APPLICATION = 'LifeLine.wsgi.application'
 DATABASES = {
     "default": dj_database_url.config(
         default="sqlite:///db.sqlite3",
-        conn_max_age=600, # persistent connections
+        conn_max_age=0, # persistent connections
         ssl_require=True # enforce SSL
     )
 }
