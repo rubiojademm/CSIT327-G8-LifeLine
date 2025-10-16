@@ -8,7 +8,7 @@ an organized and interactive platform for logging experiences, visualizing perso
 (Windows)
 4. Install requirements: `pip install -r requirements.txt`
 5. Set up environment variables
-     - Copy the example environment file: `cp .env.example .env`
+     - Copy the example environment file: `cd .\LifeLine` `cp .env.example .env`
      - Open .env and update the following:
 
         - Add your Supabase URL and Service Role Key
