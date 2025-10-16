@@ -1,137 +1,193 @@
+/* ====== BASE ====== */
 body {
-    background: #f6fff6;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    color: #222;
-    margin: 0;
-    padding: 0;
+  background: #f6fff6;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  padding-top: 64px; /* space for fixed navbar */
 }
 
-.header {
-    background: #2ecc40;
-    color: #fff;
-    padding: 2rem 0 1rem 0;
-    text-align: center;
-}
-
+/* ====== NAVBAR ====== */
 .navbar {
-    background: #27ae60;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  z-index: 100;
 }
 
-navbar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* ====== LOGO ====== */
 .navbar-logo {
-    position: absolute;
-    left: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.logo-img {
-    height: 40px;
-    width: auto;
-} 
+.navbar-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .logo-text {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* ====== LINKS ====== */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
 .navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background 0.2s;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  transition: all 0.25s ease;
 }
 
-.navbar a.active, .navbar a:hover {
-    background: #219150;
+/* Active or hover (general links only) */
+.navbar a:not(.logout-link,.confirm-btn):hover,
+.navbar a.active {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.form-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.form-container input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box; /* ensures padding doesn’t break width */
-}
-
-.form-container h2 {
-    color: #27ae60;
-    margin-bottom: 1.5rem;
-}
-
-input[type="text"], input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #b2f2b2;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-button {
-    background: #27ae60;
-    color: #fff;
-    border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background: #219150;
-}
-
-.motivation {
-    color: #27ae60;
-    font-size: 1.2rem;
-    text-align: center;
-    margin-top: 1rem;
-}
-
-/* Messages and alert section */
-.alert {
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-/* Placeholder navbar buttons */
+/* Disabled links */
 a.disabled {
   pointer-events: none;
-  color: rgb(235, 235, 235);
+  opacity: 0.5;
+}
+
+/* Logout button */
+.logout-link {
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Keep hover red */
+.logout-link:hover {
+  background: #dc3545;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+/* ====== LOGOUT MODAL ====== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeInUp 0.25s ease;
+}
+
+.modal-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #111;
+}
+
+.modal-content p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
   text-decoration: none;
+}
+
+.cancel-btn {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #f0f0f0;
+}
+
+.confirm-btn {
+  border: 1px solid #dc3545;
+  color: #fff;
+}
+
+.confirm-btn:hover {
+  background: #c82333;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
