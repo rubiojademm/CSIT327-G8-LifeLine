@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Setup - LifeLine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .progress-step.active:not(:last-child)::after {
+            background: #22c55e;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active .step-circle {
+            background: #22c55e;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .progress-step.completed .step-circle {
+            background: #16a34a;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-label {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+
+        .tooltip {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #22c55e;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 18px;
+            cursor: help;
+            margin-left: 8px;
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        input.error,
+        select.error,
+        textarea.error {
+            border-color: #ef4444;
+        }
+
+        input.success,
+        select.success,
+        textarea.success {
+            border-color: #22c55e;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .success-message {
+            color: #22c55e;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-picture-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #e2e8f0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            position: relative;
+        }
+
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-preview-placeholder {
+            font-size: 48px;
+            color: #cbd5e1;
+        }
+
+        .upload-btn-wrapper {
+            flex: 1;
+        }
+
+        .upload-btn {
+            background: #22c55e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #16a34a;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #22c55e;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 12px 24px;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .password-strength {
+            margin-top: 10px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+        }
+
+        .strength-fill.weak {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-fill.medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .strength-fill.strong {
+            width: 100%;
+            background: #22c55e;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .progress-bar {
+                padding: 20px 10px;
+            }
+
+            .step-label {
+                font-size: 10px;
+            }
+
+            .profile-picture-upload {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 Welcome to LifeLine</h1>
+            <p>Let's set up your profile to get started on your journey</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Personal Info</div>
+            </div>
+            <div class="progress-step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Contact Details</div>
+            </div>
+            <div class="progress-step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Profile Picture</div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="profileForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-section active" data-section="1">
+                    <h2 class="section-title">Personal Information</h2>
+                    <p class="section-description">Tell us a bit about yourself. This helps us personalize your experience.</p>
+
+                    <div class="form-group">
+                        <label for="fullName">
+                            Full Name<span class="required">*</span>
+                            <span class="tooltip" data-tip="Enter your first and last name">?</span>
+                        </label>
+                        <input type="text" id="fullName" name="fullName" placeholder="e.g., John Doe" required>
+                        <div class="error-message" id="fullNameError">
+                            ⚠️ <span>Full name is required</span>
+                        </div>
+                        <div class="success-message" id="fullNameSuccess">
+                            ✓ <span>Looks good!</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">
+                            Your Role<span class="required">*</span>
+                            <span class="tooltip" data-tip="Select what best describes you">?</span>
+                        </label>
+                        <select id="role" name="role" required>
+                            <option value="">Select your role</option>
+                            <option value="student">Student</option>
+                            <option value="professional">Professional</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                            <option value="freelancer">Freelancer</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message" id="roleError">
+                            ⚠️ <span>Please select your role</span>
+                        </div>
+                        <div class="success-message" id="roleSuccess">
+                            ✓ <span>Great choice!</span>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Contact Information -->
+                <div class="form-section" data-section="2">
+                    <h2 class="section-title">Contact Details</h2>
+                    <p class="section-description">We'll use this information to keep you updated on your progress.</p>
+
+                    <div class="form-group">
+                        <label for="email">
+                            Email Address<span class="required">*</span>
+                            <span class="tooltip" data-tip="We'll send important updates here">?</span>
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required>
+                        <div class="error-message" id="emailError">
+                            ⚠️ <span>Please enter a valid email address</span>
+                        </div>
+                        <div class="success-message" id="emailSuccess">
+                            ✓ <span>Valid email!</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            Phone Number (Optional)
+                            <span class="tooltip" data-tip="For important notifications">?</span>
+                        </label>
+                        <input type="tel" id="phone" name="phone" placeholder="e.g., +1 234 567 8900">
+                        <div class="error-message" id="phoneError">
+                            ⚠️ <span>Please enter a valid phone number</span>
+                        </div>
+                        <div class="success-message" id="phoneSuccess">
+                            ✓ <span>Valid phone number!</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            Create Password<span class="required">*</span>
+                            <span class="tooltip" data-tip="Must be at least 8 characters with letters and numbers">?</span>
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText">Password strength: Not set</div>
+                        </div>
+                        <div class="error-message" id="passwordError">
+                            ⚠️ <span>Password must be at least 8 characters</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            Confirm Password<span class="required">*</span>
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+                        <div class="error-message" id="confirmPasswordError">
+                            ⚠️ <span>Passwords do not match</span>
+                        </div>
+                        <div class="success-message" id="confirmPasswordSuccess">
+                            ✓ <span>Passwords match!</span>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Profile Picture -->
+                <div class="form-section" data-section="3">
+                    <h2 class="section-title">Profile Picture</h2>
+                    <p class="section-description">Add a photo to personalize your profile (optional).</p>
+
+                    <div class="form-group">
+                        <label>
+                            Upload Photo
+                            <span class="tooltip" data-tip="Accepted formats: JPG, PNG, GIF (Max 5MB)">?</span>
+                        </label>
+                        <div class="profile-picture-upload">
+                            <div class="profile-preview" id="profilePreview">
+                                <span class="profile-preview-placeholder">👤</span>
+                            </div>
+                            <div class="upload-btn-wrapper">
+                                <label for="profilePicture" class="upload-btn">
+                                    Choose Photo
+                                </label>
+                                <input type="file" id="profilePicture" name="profilePicture" accept="image/jpeg,image/png,image/gif">
+                                <div class="file-info" id="fileInfo">No file chosen</div>
+                            </div>
+                        </div>
+                        <div class="error-message" id="profilePictureError">
+                            ⚠️ <span>Invalid file type. Please upload JPG, PNG, or GIF</span>
+                        </div>
+                        <div class="success-message" id="profilePictureSuccess">
+                            ✓ <span>Photo uploaded successfully!</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">
+                            Short Bio (Optional)
+                            <span class="tooltip" data-tip="Tell us about your goals and aspirations">?</span>
+                        </label>
+                        <textarea id="bio" name="bio" rows="4" placeholder="e.g., Aspiring developer passionate about creating meaningful applications..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                        <button type="submit" class="btn btn-primary">Complete Setup ✓</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        // Real-time validation for full name
+        document.getElementById('fullName').addEventListener('input', function(e) {
+            const value = e.target.value.trim();
+            const errorMsg = document.getElementById('fullNameError');
+            const successMsg = document.getElementById('fullNameSuccess');
+            
+            if (value.length === 0) {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else if (value.length < 2) {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.querySelector('span').textContent = 'Name must be at least 2 characters';
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else {
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+                successMsg.classList.add('show');
+            }
+        });
+
+        // Real-time validation for role
+        document.getElementById('role').addEventListener('change', function(e) {
+            const value = e.target.value;
+            const errorMsg = document.getElementById('roleError');
+            const successMsg = document.getElementById('roleSuccess');
+            
+            if (value === '') {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else {
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+                successMsg.classList.add('show');
+            }
+        });
+
+        // Real-time validation for email
+        document.getElementById('email').addEventListener('input', function(e) {
+            const value = e.target.value.trim();
+            const errorMsg = document.getElementById('emailError');
+            const successMsg = document.getElementById('emailSuccess');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (value.length === 0) {
+                e.target.classList.remove('success', 'error');
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+            } else if (!emailRegex.test(value)) {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else {
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+                successMsg.classList.add('show');
+            }
+        });
+
+        // Real-time validation for phone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const value = e.target.value.trim();
+            const errorMsg = document.getElementById('phoneError');
+            const successMsg = document.getElementById('phoneSuccess');
+            const phoneRegex = /^[\d\s\+\-\(\)]+$/;
+            
+            if (value.length === 0) {
+                e.target.classList.remove('success', 'error');
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+            } else if (!phoneRegex.test(value) || value.length < 10) {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else {
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+                successMsg.classList.add('show');
+            }
+        });
+
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function(e) {
+            const value = e.target.value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            const errorMsg = document.getElementById('passwordError');
+            
+            if (value.length === 0) {
+                strengthFill.className = 'strength-fill';
+                strengthText.textContent = 'Password strength: Not set';
+                e.target.classList.remove('success', 'error');
+                errorMsg.classList.remove('show');
+                return;
+            }
+            
+            let strength = 0;
+            if (value.length >= 8) strength++;
+            if (value.match(/[a-z]/) && value.match(/[A-Z]/)) strength++;
+            if (value.match(/[0-9]/)) strength++;
+            if (value.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            if (strength <= 2) {
+                strengthFill.className = 'strength-fill weak';
+                strengthText.textContent = 'Password strength: Weak';
+                e.target.classList.add('error');
+                e.target.classList.remove('success');
+                errorMsg.querySelector('span').textContent = 'Password must be at least 8 characters with letters and numbers';
+                errorMsg.classList.add('show');
+            } else if (strength === 3) {
+                strengthFill.className = 'strength-fill medium';
+                strengthText.textContent = 'Password strength: Medium';
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+            } else {
+                strengthFill.className = 'strength-fill strong';
+                strengthText.textContent = 'Password strength: Strong';
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+            }
+            
+            // Check confirm password match
+            const confirmPassword = document.getElementById('confirmPassword');
+            if (confirmPassword.value) {
+                confirmPassword.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function(e) {
+            const password = document.getElementById('password').value;
+            const value = e.target.value;
+            const errorMsg = document.getElementById('confirmPasswordError');
+            const successMsg = document.getElementById('confirmPasswordSuccess');
+            
+            if (value.length === 0) {
+                e.target.classList.remove('success', 'error');
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+            } else if (value !== password) {
+                e.target.classList.remove('success');
+                e.target.classList.add('error');
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+            } else {
+                e.target.classList.remove('error');
+                e.target.classList.add('success');
+                errorMsg.classList.remove('show');
+                successMsg.classList.add('show');
+            }
+        });
+
+        // Profile picture upload
+        document.getElementById('profilePicture').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const errorMsg = document.getElementById('profilePictureError');
+            const successMsg = document.getElementById('profilePictureSuccess');
+            const fileInfo = document.getElementById('fileInfo');
+            const preview = document.getElementById('profilePreview');
+            
+            if (!file) {
+                fileInfo.textContent = 'No file chosen';
+                return;
+            }
+            
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            
+            if (!validTypes.includes(file.type)) {
+                errorMsg.querySelector('span').textContent = 'Invalid file type. Please upload JPG, PNG, or GIF';
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+                fileInfo.textContent = 'Invalid file type';
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                errorMsg.querySelector('span').textContent = 'File too large. Maximum size is 5MB';
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+                fileInfo.textContent = 'File too large';
+                return;
+            }
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Profile preview">`;
+            };
+            reader.readAsDataURL(file);
+            
+            errorMsg.classList.remove('show');
+            successMsg.classList.add('show');
+            fileInfo.textContent = file.name;
+        });
+
+        // Navigation functions
+        function nextStep() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            if (currentStep < totalSteps) {
+                // Mark current step as completed
+                document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('completed');
+                
+                // Hide current section
+                document.querySelector(`.form-section[data-section="${currentStep}"]`).classList.remove('active');
+                
+                currentStep++;
+                
+                // Show next section
+                document.querySelector(`.form-section[data-section="${currentStep}"]`).classList.add('active');
+                
+                // Update progress bar
+                document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                // Remove active from current step
+                document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+                
+                // Hide current section
+                document.querySelector(`.form-section[data-section="${currentStep}"]`).classList.remove('active');
+                
+                currentStep--;
+                
+                // Show previous section
+                document.querySelector(`.form-section[data-section="${currentStep}"]`).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function validateCurrentStep() {
+            let isValid = true;
+            
+            if (currentStep === 1) {
+                // Validate full name
+                const fullName = document.getElementById('fullName');
+                if (!fullName.value.trim() || fullName.value.trim().length < 2) {
+                    fullName.classList.add('error');
+                    document.getElementById('fullNameError').classList.add('show');
+                    isValid = false;
+                }
+                
+                // Validate role
+                const role = document.getElementById('role');
+                if (!role.value) {
+                    role.classList.add('error');
+                    document.getElementById('roleError').classList.add('show');
+                    isValid = false;
+                }
+            } else if (currentStep === 2) {
+                // Validate email
+                const email = document.getElementById('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+                    email.classList.add('error');
+                    document.getElementById('emailError').classList.add('show');
+                    isValid = false;
+                }
+                
+                // Validate password
+                const password = document.getElementById('password');
+                if (!password.value || password.value.length < 8) {
+                    password.classList.add('error');
+                    document.getElementById('passwordError').classList.add('show');
+                    isValid = false;
+                }
+                
+                // Validate confirm password
+                const confirmPassword = document.getElementById('confirmPassword');
+                if (!confirmPassword.value || confirmPassword.value !== password.value) {
+                    confirmPassword.classList.add('error');
+                    document.getElementById('confirmPasswordError').classList.add('show');
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+
+        // Form submission
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            // Collect form data
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                role: document.getElementById('role').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                bio: document.getElementById('bio').value
+            };
+            
+            // Log form data (in real app, this would be sent to server)
+            console.log('Form submitted:', formData);
+            
+            // Show success message
+            alert('Profile setup completed successfully! 🎉');
+            
+            // In a real application, you would redirect to dashboard or next page
+            // window.location.href = '/dashboard';
+        });
+    </script>
+</body>
+</html>
