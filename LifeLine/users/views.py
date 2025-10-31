@@ -148,3 +148,47 @@ def logout_view(request):
     return redirect("landing")
 
 
+@login_required
+def profile_view(request):
+    user = request.user
+    profile = getattr(user, "profile", None)
+
+    if request.method == "POST":
+        # Update user fields
+        user.username = request.POST.get("username", user.username)
+        user.first_name = request.POST.get("first_name", user.first_name)
+        user.last_name = request.POST.get("last_name", user.last_name)
+        user.email = request.POST.get("email", user.email)
+        user.save()
+
+        # Update profile fields
+        if profile:
+            profile.bio = request.POST.get("bio", profile.bio)
+            profile.location = request.POST.get("location", profile.location)
+            profile.save()
+
+        messages.success(request, "Your profile has been updated successfully.")
+        return redirect("profile")
+
+    # Placeholder stats & achievements
+    stats = {
+        "Goals Completed": "8",
+        "Active Goals": "3",
+        "Total Progress": "75%",
+        "Streak Days": "12",
+    }
+
+    achievements = [
+        "First Goal Completed",
+        "Goal Achiever",
+        "Weekly Streak",
+        "Month Challenger",
+    ]
+
+    context = {
+        "user": user,
+        "profile": profile,
+        "stats": stats,
+        "achievements": achievements,
+    }
+    return render(request, "profile.html", context)
