@@ -188,3 +188,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Messages */
+.messages {
+  margin-top: 1rem;
+  min-height: 40px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.alert {
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert-error,
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

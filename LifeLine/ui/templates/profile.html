@@ -38,6 +38,15 @@
           <p class="user-info"><strong>Email:</strong> {{ user.email }}</p>
           <p class="user-info"><strong>Location:</strong> {{ profile.location|default:"Not specified" }}</p>
           <p class="user-info"><strong>Bio:</strong> {{ profile.bio|default:"No bio yet." }}</p>
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
         </div>
 
         <!-- Edit Mode -->
