@@ -25,7 +25,7 @@
           {% if user.is_superuser %}
             <a href="{% url 'admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">Admin</a>
           {% endif %}
-          <a href="#" class="disabled">Profile</a>
+          <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Profile</a>
           <a href="#" class="disabled">Goals</a>
           <a href="#" class="disabled">Milestones</a>
           <a href="#" class="disabled">Growth Summary</a>
