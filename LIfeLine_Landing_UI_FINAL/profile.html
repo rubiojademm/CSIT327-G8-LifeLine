@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - LifeLine</title>
+    <link rel="stylesheet" href="/static/css/lifeline.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-picture-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            margin: 0 auto;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-placeholder {
+            font-size: 70px;
+            color: #22c55e;
+        }
+
+        .profile-name {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .profile-role {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .profile-body {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #22c55e;
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            background: #f0fdf4;
+            transform: translateX(5px);
+        }
+
+        .info-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 12px;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .bio-section {
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 35px;
+        }
+
+        .bio-text {
+            color: #64748b;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .empty-bio {
+            color: #94a3b8;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%);
+            border-radius: 12px;
+            border: 2px solid #e8f5e9;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.15);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            border-color: #22c55e;
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 30px 20px;
+            }
+
+            .profile-picture {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-picture-placeholder {
+                font-size: 50px;
+            }
+
+            .profile-name {
+                font-size: 26px;
+            }
+
+            .profile-role {
+                font-size: 16px;
+            }
+
+            .profile-body {
+                padding: 30px 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .info-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-picture-wrapper">
+                    <div class="profile-picture" id="profilePicture">
+                        <span class="profile-picture-placeholder">👤</span>
+                    </div>
+                </div>
+                <h1 class="profile-name" id="profileName">John Doe</h1>
+                <p class="profile-role" id="profileRole">Professional</p>
+            </div>
+
+            <!-- Profile Body -->
+            <div class="profile-body">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Active Goals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Milestones</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <h2 class="section-title">📋 Personal Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">👤</div>
+                        <div class="info-content">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value" id="infoName">John Doe</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-content">
+                            <div class="info-label">Email Address</div>
+                            <div class="info-value" id="infoEmail">john.doe@example.com</div>
+                        </div>
+                    </div>
+                    <div class="info-item" id="phoneItem">
+                        <div class="info-icon">📱</div>
+                        <div class="info-content">
+                            <div class="info-label">Phone Number</div>
+                            <div class="info-value" id="infoPhone">+1 234 567 8900</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">💼</div>
+                        <div class="info-content">
+                            <div class="info-label">Role</div>
+                            <div class="info-value" id="infoRole">Professional</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Me Section -->
+                <h2 class="section-title">💭 About Me</h2>
+                <div class="bio-section">
+                    <p class="bio-text" id="bioText" style="display: none;"></p>
+                    <p class="empty-bio" id="emptyBio">No bio added yet. Click "Edit Profile" to add information about yourself.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="editProfile()">
+                        ✏️ Edit Profile
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='{% url \'dashboard\' %}'">
+                        📊 View Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load profile data from localStorage
+        window.addEventListener('DOMContentLoaded', function() {
+            const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+            
+            // Update profile name
+            if (profileData.fullName) {
+                document.getElementById('profileName').textContent = profileData.fullName;
+                document.getElementById('infoName').textContent = profileData.fullName;
+            }
+            
+            // Update role
+            if (profileData.role) {
+                const roleCapitalized = capitalizeRole(profileData.role);
+                document.getElementById('profileRole').textContent = roleCapitalized;
+                document.getElementById('infoRole').textContent = roleCapitalized;
+            }
+            
+            // Update email
+            if (profileData.email) {
+                document.getElementById('infoEmail').textContent = profileData.email;
+            }
+            
+            // Update phone (hide if not provided)
+            if (profileData.phone) {
+                document.getElementById('infoPhone').textContent = profileData.phone;
+            } else {
+                document.getElementById('phoneItem').style.display = 'none';
+            }
+            
+            // Update bio
+            if (profileData.bio) {
+                document.getElementById('bioText').textContent = profileData.bio;
+                document.getElementById('bioText').style.display = 'block';
+                document.getElementById('emptyBio').style.display = 'none';
+            }
+            
+            // Update profile picture
+            if (profileData.profilePicture) {
+                document.getElementById('profilePicture').innerHTML = 
+                    `<img src="${profileData.profilePicture}" alt="Profile picture">`;
+            }
+        });
+
+        function capitalizeRole(role) {
+            return role.charAt(0).toUpperCase() + role.slice(1);
+        }
+
+        function editProfile() {
+            window.location.href = 'profile_setup.html';
+        }
+    </script>
+</body>
+</html>
