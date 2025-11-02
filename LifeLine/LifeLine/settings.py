@@ -36,6 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=3jukohf$$iyaa%ze(#(o_qo+3se56r%wox6xywe-!3w=xk$7o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG and ALLOWED_HOSTS for Deployed Site (Uncomment when pushing to Main) #
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [h.strip() for h in
@@ -44,6 +45,10 @@ h.strip()]
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in
 os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if
 o.strip()]
+
+# DEBUG and ALLOWED_HOSTS for Local Site (Comment when pushing to Main) #
+# DEBUG = True
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -56,6 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'goals',
 ]
 
 MIDDLEWARE = [

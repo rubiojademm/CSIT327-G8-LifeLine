@@ -1,9 +1,6 @@
 def landing(request):
     return render(request, "landing.html")
 
-def dashboard(request):
-    # Placeholder for dashboard, will be implemented later
-    return render(request, "base.html")
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
