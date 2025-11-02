@@ -22,10 +22,10 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('goals/', include('goals.urls')),
 
     path('', user_views.landing, name='landing'),
     path('admin-dashboard/', user_views.admin_dashboard, name='admin_dashboard'),
-    path('dashboard/', user_views.dashboard, name='dashboard'),
 
     path('profile/', user_views.profile_view, name='profile'),
 ]

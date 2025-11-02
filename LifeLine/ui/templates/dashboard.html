@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<div class="dashboard-container">
+
+  <!-- Welcome Section -->
+  <section class="welcome-card">
+    <h2>Welcome back!</h2>
+    <p>You're making great progress on your journey. Keep it up!</p>
+  </section>
+
+  <!-- Stats Grid -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <h4>Total Goals</h4>
+      <p class="stat-value">{{ stats.total_goals }}</p>
+      <span class="stat-note">+2 from last month</span>
+    </div>
+
+    <div class="stat-card">
+      <h4>Completed</h4>
+      <p class="stat-value">{{ stats.completed_goals }}</p>
+      <span class="stat-note">
+        {{ stats.completed_goals|divisibleby:stats.total_goals|floatformat:0 }}% completion rate
+      </span>
+    </div>
+
+    <div class="stat-card">
+      <h4>Achievements</h4>
+      <p class="stat-value">{{ stats.achievements }}</p>
+      <span class="stat-note">+3 this week</span>
+    </div>
+
+    <div class="stat-card">
+      <h4>Current Streak</h4>
+      <p class="stat-value">{{ stats.streak }} days</p>
+      <span class="stat-note">Keep it going!</span>
+    </div>
+  </section>
+
+  <!-- Goals and Achievements -->
+  <section class="two-grid">
+    <!-- Recent Goals -->
+    <div class="card">
+      <h3>Recent Goals</h3>
+      {% if recent_goals %}
+        {% for goal in recent_goals %}
+          <div class="goal-item">
+            <div class="goal-header">
+              <span>{{ goal.title }}</span>
+              <span class="goal-status {{ goal.status|slugify }}">{{ goal.status }}</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: {{ goal.progress|default:0 }}%;"></div>
+            </div>
+            <small>{{ goal.progress }}% complete</small>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty-state">No goals yet. Create your first goal to get started!</p>
+      {% endif %}
+    </div>
+
+    <!-- Recent Achievements -->
+    <div class="card">
+      <h3>Recent Achievements</h3>
+      {% for achievement in recent_achievements %}
+        <div class="achievement-item">
+          <div class="icon">🏆</div>
+          <div>
+            <p class="achievement-title">{{ achievement.title }}</p>
+            <p class="achievement-date">{{ achievement.date }}</p>
+          </div>
+        </div>
+      {% endfor %}
+      <button class="view-all-btn">View All Achievements</button>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
