@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracking - LifeLine</title>
+    
+    <!-- Google Fonts - Alan Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== GLOBAL STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Alan Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==================== PAGE HEADER ==================== */
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* ==================== PROGRESS BAR SECTION ==================== */
+        .progress-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .section-icon {
+            font-size: 28px;
+        }
+
+        /* ==================== OVERALL PROGRESS ==================== */
+        .overall-progress {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .progress-percentage {
+            font-size: 32px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .progress-bar {
+            height: 16px;
+            background: #e5e5e5;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e 0%, #38ef7d 100%);
+            border-radius: 8px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* ==================== GOAL TRACKER SECTION ==================== */
+        .tracker-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .filter-btn.active {
+            background: #22c55e;
+            color: white;
+            border-color: #22c55e;
+        }
+
+        /* ==================== GOAL CARDS ==================== */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .goal-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .goal-card.completed {
+            border-left-color: #22c55e;
+        }
+
+        .goal-card.ongoing {
+            border-left-color: #3b82f6;
+        }
+
+        .goal-card.pending {
+            border-left-color: #f59e0b;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .goal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            flex: 1;
+        }
+
+        .goal-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-left: 12px;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-ongoing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .goal-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .goal-progress {
+            margin-bottom: 16px;
+        }
+
+        .goal-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .goal-progress-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .goal-progress-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .goal-progress-bar {
+            height: 8px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e 0%, #38ef7d 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-card.ongoing .goal-progress-fill {
+            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+        }
+
+        .goal-card.pending .goal-progress-fill {
+            background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+        }
+
+        .goal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .goal-date {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* ==================== EMPTY STATE ==================== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 28px;
+            }
+
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ==================== PAGE HEADER ==================== -->
+        <div class="page-header">
+            <h1 class="page-title">📊 Goal Tracking & Progress</h1>
+            <p class="page-subtitle">Monitor your progress and stay on track with your goals</p>
+        </div>
+
+        <!-- ==================== OVERALL PROGRESS SECTION ==================== -->
+        <div class="progress-section">
+            <div class="section-header">
+                <h2 class="section-title">📈 Overall Progress</h2>
+            </div>
+
+            <div class="overall-progress">
+                <div class="progress-header">
+                    <span class="progress-label">Total Completion</span>
+                    <span class="progress-percentage">68%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 68%"></div>
+                </div>
+
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total Goals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== GOAL TRACKER SECTION ==================== -->
+        <div class="progress-section">
+            <div class="section-header">
+                <h2 class="section-title">🎯 Goal Tracker</h2>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="tracker-filters">
+                <button class="filter-btn active" onclick="filterGoals('all')">All Goals</button>
+                <button class="filter-btn" onclick="filterGoals('completed')">✅ Completed</button>
+                <button class="filter-btn" onclick="filterGoals('ongoing')">🔄 Ongoing</button>
+                <button class="filter-btn" onclick="filterGoals('pending')">⏳ Pending</button>
+            </div>
+
+            <!-- Goals Grid -->
+            <div class="goals-grid" id="goalsGrid">
+                <!-- Completed Goal 1 -->
+                <div class="goal-card completed" data-status="completed">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Complete Python Course</h3>
+                        <span class="goal-status status-completed">✓ Completed</span>
+                    </div>
+                    <p class="goal-description">Finished all modules and completed the final project with excellent results.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">100%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Completed: Mar 15, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Completed Goal 2 -->
+                <div class="goal-card completed" data-status="completed">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Read 5 Books</h3>
+                        <span class="goal-status status-completed">✓ Completed</span>
+                    </div>
+                    <p class="goal-description">Achieved quarterly reading goal ahead of schedule.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">100%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Completed: Mar 20, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Ongoing Goal 1 -->
+                <div class="goal-card ongoing" data-status="ongoing">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Build Portfolio Website</h3>
+                        <span class="goal-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="goal-description">Creating a professional portfolio to showcase projects and skills.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">75%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Started: Mar 1, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Ongoing Goal 2 -->
+                <div class="goal-card ongoing" data-status="ongoing">
+                    <div class="goal-header">
+                        <h3 class="goal-title">30-Day Fitness Challenge</h3>
+                        <span class="goal-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="goal-description">Daily exercise routine for 30 consecutive days. Currently on day 18!</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">60%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Started: Mar 5, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Ongoing Goal 3 -->
+                <div class="goal-card ongoing" data-status="ongoing">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Learn React Framework</h3>
+                        <span class="goal-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="goal-description">Master React fundamentals and build three functional applications.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">45%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Started: Feb 15, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Pending Goal 1 -->
+                <div class="goal-card pending" data-status="pending">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Get AWS Certification</h3>
+                        <span class="goal-status status-pending">Pending</span>
+                    </div>
+                    <p class="goal-description">Study and prepare for AWS Solutions Architect certification exam.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">0%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Target: June 2024</span>
+                    </div>
+                </div>
+
+                <!-- Pending Goal 2 -->
+                <div class="goal-card pending" data-status="pending">
+                    <div class="goal-header">
+                        <h3 class="goal-title">Write 10 Blog Posts</h3>
+                        <span class="goal-status status-pending">Pending</span>
+                    </div>
+                    <p class="goal-description">Publish technical blog posts on web development topics.</p>
+                    <div class="goal-progress">
+                        <div class="goal-progress-header">
+                            <span class="goal-progress-label">Progress</span>
+                            <span class="goal-progress-value">0%</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-meta">
+                        <span class="goal-date">Target: July 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ========== FILTER GOALS ==========
+        function filterGoals(status) {
+            const goals = document.querySelectorAll('.goal-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Update active filter button
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter goals
+            goals.forEach(goal => {
+                if (status === 'all') {
+                    goal.style.display = 'block';
+                } else {
+                    if (goal.dataset.status === status) {
+                        goal.style.display = 'block';
+                    } else {
+                        goal.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // ========== ANIMATE PROGRESS BARS ON LOAD ==========
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill, .goal-progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

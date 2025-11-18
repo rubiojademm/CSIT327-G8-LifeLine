@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - LifeLine</title>
+    
+    <!-- Google Fonts - Alan Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== GLOBAL STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Alan Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==================== PAGE HEADER ==================== */
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* ==================== TABS ==================== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: white;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #f1f1f1;
+        }
+
+        /* ==================== TAB CONTENT ==================== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================== MILESTONES SECTION ==================== */
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 28px;
+        }
+
+        /* ==================== MILESTONE CATEGORIES ==================== */
+        .milestone-category {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .category-badge {
+            background: #22c55e;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ==================== MILESTONE ITEMS ==================== */
+        .milestone-item {
+            padding: 16px;
+            border-left: 4px solid #e5e5e5;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .milestone-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .milestone-item.completed {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .milestone-item.ongoing {
+            border-left-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .milestone-item.upcoming {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .milestone-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .milestone-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-completed {
+            background: #22c55e;
+            color: white;
+        }
+
+        .status-ongoing {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .status-upcoming {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .milestone-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .milestone-date {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* ==================== ACHIEVEMENT BADGES SECTION ==================== */
+        .badges-section {
+            margin-bottom: 40px;
+        }
+
+        .badges-category {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .badges-category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .category-level-icon {
+            font-size: 36px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .category-level-info h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .category-level-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .badge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #22c55e, #38ef7d);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .badge-card:hover::before {
+            opacity: 1;
+        }
+
+        .badge-card:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 16px 32px rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+        }
+
+        /* Beginner Level - Green */
+        .badge-card.beginner {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .badge-card.beginner:hover {
+            box-shadow: 0 16px 32px rgba(34, 197, 94, 0.25);
+        }
+
+        /* Intermediate Level - Blue */
+        .badge-card.intermediate {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .badge-card.intermediate::before {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .badge-card.intermediate:hover {
+            box-shadow: 0 16px 32px rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6;
+        }
+
+        /* Advanced Level - Purple */
+        .badge-card.advanced {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        }
+
+        .badge-card.advanced::before {
+            background: linear-gradient(90deg, #a855f7, #c084fc);
+        }
+
+        .badge-card.advanced:hover {
+            box-shadow: 0 16px 32px rgba(168, 85, 247, 0.25);
+            border-color: #a855f7;
+        }
+
+        .badge-card.unlocked {
+            animation: badgeUnlock 0.6s ease;
+        }
+
+        @keyframes badgeUnlock {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .badge-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .badge-card:hover .badge-icon-wrapper {
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .badge-card.unlocked .badge-icon-wrapper {
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
+            75% { transform: translateY(-15px); }
+        }
+
+        .badge-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .badge-description {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .badge-date {
+            font-size: 12px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .badge-card.intermediate .badge-date {
+            color: #3b82f6;
+        }
+
+        .badge-card.advanced .badge-date {
+            color: #a855f7;
+        }
+
+        /* ==================== SHINE EFFECT ==================== */
+        .badge-card.unlocked::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            animation: shine 2s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-100%, -100%); }
+            100% { transform: rotate(45deg) translate(100%, 100%); }
+        }
+
+        /* ==================== EMPTY STATE ==================== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 28px;
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .category-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ==================== PAGE HEADER ==================== -->
+        <div class="page-header">
+            <h1 class="page-title">🏆 Achievements & Milestones</h1>
+            <p class="page-subtitle">Track your progress and celebrate your accomplishments</p>
+        </div>
+
+        <!-- ==================== TABS ==================== -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('milestones')">📍 Milestones</button>
+            <button class="tab-btn" onclick="switchTab('badges')">🎖️ Achievement Badges</button>
+        </div>
+
+        <!-- ==================== MILESTONES TAB ==================== -->
+        <div id="milestones-tab" class="tab-content active">
+            <h2 class="section-title">
+                <span class="section-icon">📍</span>
+                Your Milestones
+            </h2>
+
+            <!-- Completed Milestones -->
+            <div class="milestone-category">
+                <div class="category-header">
+                    <h3 class="category-title">✅ Completed Milestones</h3>
+                    <span class="category-badge">5 Completed</span>
+                </div>
+
+                <div class="milestone-item completed">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Finished Python Course</h4>
+                        <span class="milestone-status status-completed">✓ Completed</span>
+                    </div>
+                    <p class="milestone-description">Successfully completed the Python for Beginners course with a final project.</p>
+                    <div class="milestone-date">Completed on: March 15, 2024</div>
+                </div>
+
+                <div class="milestone-item completed">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">First GitHub Commit</h4>
+                        <span class="milestone-status status-completed">✓ Completed</span>
+                    </div>
+                    <p class="milestone-description">Made your first contribution to open source on GitHub.</p>
+                    <div class="milestone-date">Completed on: February 28, 2024</div>
+                </div>
+
+                <div class="milestone-item completed">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Read 5 Books</h4>
+                        <span class="milestone-status status-completed">✓ Completed</span>
+                    </div>
+                    <p class="milestone-description">Achieved your reading goal of 5 books this quarter.</p>
+                    <div class="milestone-date">Completed on: March 20, 2024</div>
+                </div>
+            </div>
+
+            <!-- Ongoing Achievements -->
+            <div class="milestone-category">
+                <div class="category-header">
+                    <h3 class="category-title">🔄 Ongoing Achievements</h3>
+                    <span class="category-badge" style="background: #3b82f6;">3 In Progress</span>
+                </div>
+
+                <div class="milestone-item ongoing">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Build Portfolio Website</h4>
+                        <span class="milestone-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="milestone-description">Create and deploy a professional portfolio website showcasing your projects.</p>
+                    <div class="milestone-date">Started on: March 1, 2024</div>
+                </div>
+
+                <div class="milestone-item ongoing">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">30-Day Fitness Challenge</h4>
+                        <span class="milestone-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="milestone-description">Complete 30 consecutive days of exercise. Currently on day 18!</p>
+                    <div class="milestone-date">Started on: March 5, 2024</div>
+                </div>
+
+                <div class="milestone-item ongoing">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Learn JavaScript Frameworks</h4>
+                        <span class="milestone-status status-ongoing">In Progress</span>
+                    </div>
+                    <p class="milestone-description">Master React and build three functional applications.</p>
+                    <div class="milestone-date">Started on: February 15, 2024</div>
+                </div>
+            </div>
+
+            <!-- Upcoming Goals -->
+            <div class="milestone-category">
+                <div class="category-header">
+                    <h3 class="category-title">⏳ Upcoming Goals</h3>
+                    <span class="category-badge" style="background: #f59e0b;">4 Planned</span>
+                </div>
+
+                <div class="milestone-item upcoming">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Get AWS Certification</h4>
+                        <span class="milestone-status status-upcoming">Upcoming</span>
+                    </div>
+                    <p class="milestone-description">Study for and pass the AWS Solutions Architect certification exam.</p>
+                    <div class="milestone-date">Target Date: June 2024</div>
+                </div>
+
+                <div class="milestone-item upcoming">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Write Technical Blog Posts</h4>
+                        <span class="milestone-status status-upcoming">Upcoming</span>
+                    </div>
+                    <p class="milestone-description">Publish 10 technical blog posts on web development topics.</p>
+                    <div class="milestone-date">Target Date: July 2024</div>
+                </div>
+
+                <div class="milestone-item upcoming">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Contribute to Open Source</h4>
+                        <span class="milestone-status status-upcoming">Upcoming</span>
+                    </div>
+                    <p class="milestone-description">Make meaningful contributions to 3 open source projects.</p>
+                    <div class="milestone-date">Target Date: August 2024</div>
+                </div>
+
+                <div class="milestone-item upcoming">
+                    <div class="milestone-header">
+                        <h4 class="milestone-title">Run a Marathon</h4>
+                        <span class="milestone-status status-upcoming">Upcoming</span>
+                    </div>
+                    <p class="milestone-description">Complete training and run a full marathon (42.2km).</p>
+                    <div class="milestone-date">Target Date: September 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== BADGES TAB ==================== -->
+        <div id="badges-tab" class="tab-content">
+            <h2 class="section-title">
+                <span class="section-icon">🎖️</span>
+                Achievement Badges
+            </h2>
+
+            <div class="badges-grid">
+                <!-- Badge 1 -->
+                <div class="badge-card unlocked">
+                    <span class="badge-icon">🎯</span>
+                    <h3 class="badge-title">Getting Started</h3>
+                    <p class="badge-description">Created your first goal!</p>
+                    <div class="badge-date">Unlocked: Feb 10, 2024</div>
+                </div>
+
+                <!-- Badge 2 -->
+                <div class="badge-card unlocked">
+                    <span class="badge-icon">🏆</span>
+                    <h3 class="badge-title">First Victory</h3>
+                    <p class="badge-description">Completed your first goal!</p>
+                    <div class="badge-date">Unlocked: Feb 28, 2024</div>
+                </div>
+
+                <!-- Badge 3 -->
+                <div class="badge-card unlocked">
+                    <span class="badge-icon">🔥</span>
+                    <h3 class="badge-title">Week Warrior</h3>
+                    <p class="badge-description">Maintained a 7-day streak!</p>
+                    <div class="badge-date">Unlocked: Mar 7, 2024</div>
+                </div>
+
+                <!-- Badge 4 -->
+                <div class="badge-card unlocked">
+                    <span class="badge-icon">⭐</span>
+                    <h3 class="badge-title">Goal Master</h3>
+                    <p class="badge-description">Completed 5 goals!</p>
+                    <div class="badge-date">Unlocked: Mar 15, 2024</div>
+                </div>
+
+                <!-- Badge 5 -->
+                <div class="badge-card unlocked">
+                    <span class="badge-icon">💎</span>
+                    <h3 class="badge-title">Diamond</h3>
+                    <p class="badge-description">Completed 10 goals!</p>
+                    <div class="badge-date">Unlocked: Mar 20, 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ========== TAB SWITCHING ==========
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab content
+            if (tabName === 'milestones') {
+                document.getElementById('milestones-tab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            } else if (tabName === 'badges') {
+                document.getElementById('badges-tab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            }
+        }
+
+        // ========== SIMULATE BADGE UNLOCK (for demo) ==========
+        function unlockBadge(badgeElement) {
+            badgeElement.classList.remove('locked');
+            badgeElement.classList.add('unlocked');
+            
+            // Update badge date
+            const dateElement = badgeElement.querySelector('.badge-date');
+            const today = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            dateElement.textContent = `Unlocked: ${today}`;
+            
+            // Remove lock overlay
+            const lockOverlay = badgeElement.querySelector('.lock-overlay');
+            if (lockOverlay) {
+                lockOverlay.remove();
+            }
+        }
+
+        // Add click event to locked badges (for demo purposes)
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockedBadges = document.querySelectorAll('.badge-card.locked');
+            lockedBadges.forEach(badge => {
+                badge.addEventListener('click', function() {
+                    if (confirm('Unlock this badge? (Demo only)')) {
+                        unlockBadge(this);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
