@@ -26,7 +26,7 @@
             <a href="{% url 'admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">Admin</a>
           {% endif %}
           <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Profile</a>
-          <a href="#" class="disabled">Goals</a>
+          <a href="{% url 'goals_page' %}" class="{% if request.resolver_match.url_name == 'goals_page' %}active{% endif %}">Goals</a>
           <a href="#" class="disabled">Milestones</a>
           <a href="#" class="disabled">Growth Summary</a>
           <a href="{% url 'logout' %}" class="logout-link">Logout</a>
@@ -34,13 +34,13 @@
       </div>
 
       <!-- Logout Confirmation Modal -->
-        <div id="logoutModal" class="modal-overlay">
-        <div class="modal-content">
+        <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
             <h2>Are you sure you want to logout?</h2>
             <p>You will be signed out of your account and redirected to the landing page.</p>
-            <div class="modal-actions">
-            <button id="cancelLogout" class="cancel-btn">Cancel</button>
-            <a href="{% url 'logout' %}" id="confirmLogout" class="confirm-btn">Logout</a>
+            <div class="logout-actions">
+            <button id="cancelLogout" class="logout-cancel-btn">Cancel</button>
+            <a href="{% url 'logout' %}" id="confirmLogout" class="logout-confirm-btn">Logout</a>
             </div>
         </div>
         </div>

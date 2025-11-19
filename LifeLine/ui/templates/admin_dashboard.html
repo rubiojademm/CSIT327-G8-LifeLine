@@ -9,6 +9,17 @@
     <p>Manage registered users</p>
   </div>
 
+  <!-- MESSAGES AREA -->
+  {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="alert {{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="dashboard-content">
     <div class="search-bar-container">
       <form method="get" action="" class="search-bar-form">
@@ -65,16 +76,34 @@
             {% endif %}
           </td>
           <td>
-            <form method="post" style="display:inline;">
-              {% csrf_token %}
-              <input type="hidden" name="user_id" value="{{ user.id }}">
-              {% if user.is_active %}
-                <button type="submit" name="action" value="deactivate" class="btn-small deactivate">Deactivate</button>
-              {% else %}
-                <button type="submit" name="action" value="activate" class="btn-small activate">Activate</button>
-              {% endif %}
-              <button type="submit" name="action" value="delete" class="btn-small delete">Delete</button>
-            </form>
+            {% if user.id == request.user.id %}
+                <!-- Disabled buttons for the logged-in user -->
+                <button class="btn-small deactivate" disabled style="opacity: 0.5; cursor: not-allowed;">
+                  Deactivate
+                </button>
+                <button class="btn-small delete" disabled style="opacity: 0.5; cursor: not-allowed;">
+                  Delete
+                </button>
+            {% else %}
+                <form method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                  {% if user.is_active %}
+                    <button type="submit" name="action" value="deactivate" class="btn-small deactivate">
+                      Deactivate
+                    </button>
+                  {% else %}
+                    <button type="submit" name="action" value="activate" class="btn-small activate">
+                      Activate
+                    </button>
+                  {% endif %}
+
+                  <button type="submit" name="action" value="delete" class="btn-small delete">
+                    Delete
+                  </button>
+                </form>
+            {% endif %}
           </td>
         </tr>
         {% empty %}

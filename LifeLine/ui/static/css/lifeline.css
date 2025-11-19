@@ -73,11 +73,10 @@ body {
 }
 
 /* Active or hover (general links only) */
-.navbar a:not(.logout-link,.confirm-btn):hover,
-.navbar a.active {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.navbar .logout-link:hover {
+  background: #dc3545 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4) !important;
 }
 
 /* Disabled links */
@@ -104,23 +103,23 @@ a.disabled {
 }
 
 /* ====== LOGOUT MODAL ====== */
-.modal-overlay {
+.logout-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(3px);
-  display: none;
+  display: none !important;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   transition: opacity 0.25s ease;
 }
 
-.modal-overlay.active {
-  display: flex;
+.logout-overlay.active {
+  display: flex !important;
 }
 
-.modal-content {
+.logout-modal {
   background: #fff;
   border-radius: 12px;
   padding: 2rem;
@@ -131,27 +130,27 @@ a.disabled {
   animation: fadeInUp 0.25s ease;
 }
 
-.modal-content h2 {
+.logout-modal h2 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
   color: #111;
 }
 
-.modal-content p {
+.logout-modal p {
   color: #555;
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
 }
 
-.modal-actions {
+.logout-actions {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
 
-.cancel-btn,
-.confirm-btn {
+.logout-cancel-btn,
+.logout-confirm-btn {
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   font-weight: 500;
@@ -160,22 +159,22 @@ a.disabled {
   text-decoration: none;
 }
 
-.cancel-btn {
+.logout-cancel-btn {
   border: 1px solid #ccc;
   background: #fff;
   color: #333;
 }
 
-.cancel-btn:hover {
+.logout-cancel-btn:hover {
   background: #f0f0f0;
 }
 
-.confirm-btn {
+.logout-confirm-btn {
   border: 1px solid #dc3545;
   color: #fff;
 }
 
-.confirm-btn:hover {
+.logout-confirm-btn:hover {
   background: #c82333;
   color: #fff;
   box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);

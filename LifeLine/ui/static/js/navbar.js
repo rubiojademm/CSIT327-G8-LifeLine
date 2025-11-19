@@ -14,11 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.classList.remove("active");
     });
 
-    // Close modal on background click
     modal.addEventListener("click", function (e) {
-      if (e.target === modal) {
-        modal.classList.remove("active");
-      }
+      if (e.target === modal) modal.classList.remove("active");
     });
   }
 });
