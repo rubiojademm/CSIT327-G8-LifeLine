@@ -1,0 +1,57 @@
+<!-- CREATE GOAL MODAL -->
+<div id="createGoalModal" class="modal-overlay create-goal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Create New Goal</h2>
+      <p class="muted">Set a new goal to track your progress and achieve your ambitions.</p>
+    </div>
+
+    <form method="POST" action="{% url 'create_goal' %}" class="space-y-4">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="title">Goal Title *</label>
+        <input type="text" id="title" name="title" placeholder="e.g., Learn a new language" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3" placeholder="Describe what you want to achieve..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select name="category" id="category">
+          <option value="">Select a category</option>
+          <option>Personal Development</option>
+          <option>Health & Fitness</option>
+          <option>Learning</option>
+          <option>Career</option>
+          <option>Finance</option>
+          <option>Relationships</option>
+          <option>Hobbies</option>
+          <option>Travel</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="target_date">Target Date (Optional)</label>
+        <input type="date" id="target_date" name="target_date">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" onclick="closeGoalModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Create Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openGoalModal() {
+  document.getElementById("createGoalModal").classList.remove("hidden");
+}
+function closeGoalModal() {
+  document.getElementById("createGoalModal").classList.add("hidden");
+}
+</script>

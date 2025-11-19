@@ -205,3 +205,43 @@ body {
   }
 }
 
+/* Messages */
+.messages-container {
+  margin-bottom: 1.5rem;
+}
+
+.alert {
+  padding: 0.9rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+  border: 1px solid transparent;
+}
+
+/* Success */
+.alert.success {
+  background: #e9f7ef;
+  color: #1b5e20;
+  border-color: #c8e6c9;
+}
+
+/* Warning */
+.alert.warning {
+  background: #fff4cc;
+  color: #805b00;
+  border-color: #ffe8a3;
+}
+
+/* Error */
+.alert.error {
+  background: #fce4e4;
+  color: #a80000;
+  border-color: #ffb3b3;
+}
+
+/* Info */
+.alert.info {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border-color: #90caf9;
+}
