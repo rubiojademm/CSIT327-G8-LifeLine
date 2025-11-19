@@ -5,36 +5,31 @@ from .models import Goal
 
 @login_required
 def dashboard(request):
-    user = request.user
+    user_goals = Goal.objects.filter(user=request.user)
 
-    # Fetch user's goals
-    user_goals = Goal.objects.filter(user=user)
-
-    # Dynamic goal-based stats
     total_goals = user_goals.count()
     completed_goals = user_goals.filter(status="Completed").count()
+    in_progress_goals = user_goals.filter(status="In Progress").count()
+    not_started_goals = user_goals.filter(status="Not Started").count()
+
+    # Compute completion rate safely
+    completion_rate = (completed_goals / total_goals) * 100 if total_goals > 0 else 0
+
+    # Get recent goals (latest 3)
+    recent_goals = user_goals.order_by('-created_at')[:3]
 
     stats = {
         "total_goals": total_goals,
         "completed_goals": completed_goals,
-        "achievements": 15,     # STATIC — because achievements don't exist yet
-        "streak": 7,            # STATIC — streak logic not implemented yet
+        "in_progress_goals": in_progress_goals,
+        "not_started_goals": not_started_goals,
+        "streak": 0,  # You can calculate a streak later if needed
+        "completion_rate": round(completion_rate),
     }
-
-    # Recent goals pulled from DB
-    recent_goals = user_goals.order_by('-created_at')[:5]
-
-    # Static achievements (placeholder)
-    recent_achievements = [
-        {"id": 1, "title": "First Goal Completed", "date": "2 days ago"},
-        {"id": 2, "title": "7-Day Streak", "date": "1 week ago"},
-        {"id": 3, "title": "Goal Setter", "date": "2 weeks ago"},
-    ]
 
     context = {
         "stats": stats,
         "recent_goals": recent_goals,
-        "recent_achievements": recent_achievements,  # remains static
     }
     return render(request, "dashboard.html", context)
 

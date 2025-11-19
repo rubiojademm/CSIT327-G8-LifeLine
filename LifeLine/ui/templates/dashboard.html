@@ -23,7 +23,7 @@
       <h4>Completed</h4>
       <p class="stat-value">{{ stats.completed_goals }}</p>
       <span class="stat-note">
-        {{ stats.completed_goals|divisibleby:stats.total_goals|floatformat:0 }}% completion rate
+          {{ stats.completion_rate }}% completion rate
       </span>
     </div>
 
