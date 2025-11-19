@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/goals_page.css' %}">
+
+<div class="goals-container">
+
+  <!-- Header -->
+  <div class="header-row">
+    <div>
+      <h2 class="title">Your Goals</h2>
+      <p class="subtitle">Track and achieve your goals</p>
+    </div>
+    <button onclick="openGoalModal()" class="btn-primary">Create Goal</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-card">
+    <form method="GET" class="filters-grid">
+
+      <input type="text" name="search" placeholder="Search goals..." value="{{ search }}" class="input"/>
+
+      <!-- Category -->
+      <select name="category" class="input">
+        {% for c in categories %}
+        <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- Status -->
+      <select name="status" class="input">
+        {% for s in statuses %}
+        <option value="{{ s }}" {% if s == status %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+
+      <button class="btn-secondary">Apply</button>
+    </form>
+  </div>
+
+  <!-- Goals Grid -->
+  {% if goals %}
+  <div class="goals-grid">
+    {% for goal in goals %}
+    <div class="goal-card">
+
+      <div class="goal-header">
+        <h3 class="goal-title">{{ goal.title }}</h3>
+        <a href="{% url 'delete_goal' goal.id %}" class="delete-btn">Delete</a>
+      </div>
+
+      <p class="goal-desc">{{ goal.description }}</p>
+      <p class="goal-cat">{{ goal.category }}</p>
+
+      <div class="progress-label">
+        <span>Progress</span>
+        <span class="status-tag">{{ goal.status }}</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ goal.progress }}%;"></div>
+      </div>
+
+      <div class="progress-footer">
+        <span>{{ goal.progress }}% complete</span>
+        {% if goal.progress < 100 %}
+        <a href="{% url 'update_progress' goal.id %}" class="btn-small">+10%</a>
+        {% endif %}
+      </div>
+
+      <p class="date-sm">Created: {{ goal.created_at|date:"M j, Y" }}</p>
+
+      {% if goal.target_date %}
+        <p class="date-sm">Target: {{ goal.target_date|date:"M j, Y" }}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="no-goals">
+      <p>No goals found.</p>
+    </div>
+  {% endif %}
+
+</div>
+
+<!-- CREATE GOAL MODAL -->
+<div id="createGoalModal" class="create-goal-overlay hidden">
+  <div class="modal">
+    
+    <div class="modal-header">
+      <h2>Create New Goal</h2>
+      <p class="muted">Set a new goal to track your progress and achieve your ambitions.</p>
+    </div>
+
+    <form method="POST" action="{% url 'create_goal' %}" class="space-y-4">
+      {% csrf_token %}
+
+      <!-- Title -->
+      <div class="form-group">
+        <label for="title">Goal Title *</label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          placeholder="e.g., Learn a new language" 
+          required
+        >
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          rows="3" 
+          placeholder="Describe what you want to achieve..."
+        ></textarea>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select name="category" id="category">
+          <option value="">Select a category</option>
+          <option>Personal Development</option>
+          <option>Health & Fitness</option>
+          <option>Learning</option>
+          <option>Career</option>
+          <option>Finance</option>
+          <option>Relationships</option>
+          <option>Hobbies</option>
+          <option>Travel</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Target Date -->
+      <div class="form-group">
+        <label for="target_date">Target Date (Optional)</label>
+        <input type="date" id="target_date" name="target_date">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" onclick="closeGoalModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Create Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JS for open/close -->
+<script>
+function openGoalModal() {
+  document.getElementById("createGoalModal").classList.remove("hidden");
+}
+function closeGoalModal() {
+  document.getElementById("createGoalModal").classList.add("hidden");
+}
+</script>
+{% endblock %}
