@@ -25,3 +25,5 @@ an organized and interactive platform for logging experiences, visualizing perso
 ## Developers
 - Jecie Jade Rubio, Full-stack developer, jeciejade.rubio@cit.edu
 - Vince Raymund Alerta, Full-stack developer, vinceraymund.alerta@cit.edu
+## Deployed Site
+https://csit327-g8-lifeline.onrender.com
