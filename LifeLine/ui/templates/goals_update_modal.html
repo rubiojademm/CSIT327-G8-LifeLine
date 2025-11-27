@@ -1,0 +1,34 @@
+<div id="updateProgressModal" class="goal-overlay hidden">
+  <div class="modal">
+
+    <div class="modal-header">
+      <h2>Update Progress</h2>
+      <p class="muted">Adjust your current goal progress.</p>
+    </div>
+
+    <form method="POST" id="updateProgressForm">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Current Progress</label>
+        <input type="text" id="currentProgressDisplay" disabled>
+      </div>
+
+      <div class="form-group">
+        <label>New Progress (%)</label>
+        <input type="range" min="0" max="100" id="progress_slider">
+      </div>
+
+      <div class="form-group">
+        <label>Or Enter Manually (%)</label>
+        <input type="number" name="progress" id="progress_input" min="0" max="100" required>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" onclick="closeUpdateModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Update</button>
+      </div>
+    </form>
+
+  </div>
+</div>
