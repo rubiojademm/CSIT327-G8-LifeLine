@@ -11,7 +11,7 @@
       <h2 class="title">Your Goals</h2>
       <p class="subtitle">Track and achieve your goals</p>
     </div>
-    <button onclick="openGoalModal()" class="btn-primary">Create Goal</button>
+    <button onclick="openCreateGoalModal()" class="btn-primary">Create Goal</button>
   </div>
 
   <!-- Filters -->
@@ -63,14 +63,12 @@
 
       <div class="progress-footer">
         <span>{{ goal.progress }}% complete</span>
-        {% if goal.progress < 100 %}
-        <a href="{% url 'update_progress' goal.id %}" class="btn-small">+10%</a>
-        {% endif %}
+        <button class="btn-small" onclick="openUpdateModal({{ goal.id }}, {{ goal.progress }})">Update</button>
       </div>
 
       <p class="date-sm">Created: {{ goal.created_at|date:"M j, Y" }}</p>
 
-      {% if goal.target_date %}
+      {% if goal.target_date %} 
         <p class="date-sm">Target: {{ goal.target_date|date:"M j, Y" }}</p>
       {% endif %}
     </div>
@@ -84,79 +82,10 @@
 
 </div>
 
-<!-- CREATE GOAL MODAL -->
-<div id="createGoalModal" class="create-goal-overlay hidden">
-  <div class="modal">
-    
-    <div class="modal-header">
-      <h2>Create New Goal</h2>
-      <p class="muted">Set a new goal to track your progress and achieve your ambitions.</p>
-    </div>
+{% include "goals_update_modal.html" %}
+{% include "goals_create_modal.html" %}
+{% endblock %}
 
-    <form method="POST" action="{% url 'create_goal' %}" class="space-y-4">
-      {% csrf_token %}
-
-      <!-- Title -->
-      <div class="form-group">
-        <label for="title">Goal Title *</label>
-        <input 
-          type="text" 
-          id="title" 
-          name="title" 
-          placeholder="e.g., Learn a new language" 
-          required
-        >
-      </div>
-
-      <!-- Description -->
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea 
-          id="description" 
-          name="description" 
-          rows="3" 
-          placeholder="Describe what you want to achieve..."
-        ></textarea>
-      </div>
-
-      <!-- Category -->
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select name="category" id="category">
-          <option value="">Select a category</option>
-          <option>Personal Development</option>
-          <option>Health & Fitness</option>
-          <option>Learning</option>
-          <option>Career</option>
-          <option>Finance</option>
-          <option>Relationships</option>
-          <option>Hobbies</option>
-          <option>Travel</option>
-          <option>Other</option>
-        </select>
-      </div>
-
-      <!-- Target Date -->
-      <div class="form-group">
-        <label for="target_date">Target Date (Optional)</label>
-        <input type="date" id="target_date" name="target_date">
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeGoalModal()">Cancel</button>
-        <button type="submit" class="btn-primary">Create Goal</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- JS for open/close -->
-<script>
-function openGoalModal() {
-  document.getElementById("createGoalModal").classList.remove("hidden");
-}
-function closeGoalModal() {
-  document.getElementById("createGoalModal").classList.add("hidden");
-}
-</script>
+{% block scripts %}
+<script src="{% static 'js/goals_modal.js' %}" defer></script>
 {% endblock %}

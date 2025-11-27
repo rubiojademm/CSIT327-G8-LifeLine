@@ -94,9 +94,12 @@ def create_goal(request):
 def update_progress(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
 
-    new_progress = min(goal.progress + 10, 100)
-    goal.progress = new_progress
-    goal.save()
+    if request.method == "POST":
+        new_progress = int(request.POST.get("progress", goal.progress))
+
+        # Clamp between 0 and 100
+        goal.progress = max(0, min(100, new_progress))
+        goal.save()
 
     return redirect("goals_page")
 

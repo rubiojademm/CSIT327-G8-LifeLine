@@ -20,7 +20,7 @@
       <!-- Links -->
       <div class="navbar-links">
         {% if user.is_authenticated %}
-          <a href="{% url 'landing' %}" class="{% if request.resolver_match.url_name == 'landing' %}active{% endif %}">Home</a>
+          <!-- <a href="{% url 'landing' %}" class="{% if request.resolver_match.url_name == 'landing' %}active{% endif %}">Home</a> -->
           <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
           {% if user.is_superuser %}
             <a href="{% url 'admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">Admin</a>
@@ -48,5 +48,7 @@
   </nav>
 
   {% block content %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
 </body>
 </html>
