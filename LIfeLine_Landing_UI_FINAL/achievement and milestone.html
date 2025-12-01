@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
     <!-- Google Fonts - Alan Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">     
     
     <style>
         /* ==================== GLOBAL STYLES ==================== */
@@ -43,6 +43,17 @@
             font-weight: 700;
             color: #1a1a1a;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .crown-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+            vertical-align: middle;
+            object-fit: contain;
         }
 
         .page-subtitle {
@@ -111,6 +122,12 @@
 
         .section-icon {
             font-size: 28px;
+        }
+
+        .section-crown {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
 
         /* ==================== MILESTONE CATEGORIES ==================== */
@@ -483,14 +500,21 @@
     <div class="container">
         <!-- ==================== PAGE HEADER ==================== -->
         <div class="page-header">
-            <h1 class="page-title">🏆 Achievements & Milestones</h1>
+            <h1 class="page-title">
+                <img src="UI Assets/Header_icon_AB_FINAL.png" alt="Crown" class="crown-icon">
+                Achievements & Milestones
+            </h1>
             <p class="page-subtitle">Track your progress and celebrate your accomplishments</p>
         </div>
 
         <!-- ==================== TABS ==================== -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('milestones')">📍 Milestones</button>
-            <button class="tab-btn" onclick="switchTab('badges')">🎖️ Achievement Badges</button>
+            <button class="tab-btn" onclick="switchTab('badges')">
+            <img src="UI Assets/Header_icon_AB_FINAL.png" alt="Trophy" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">
+             Achievement Badges
+            </button>
+        
         </div>
 
         <!-- ==================== MILESTONES TAB ==================== -->
@@ -618,7 +642,7 @@
         <!-- ==================== BADGES TAB ==================== -->
         <div id="badges-tab" class="tab-content">
             <h2 class="section-title">
-                <span class="section-icon">🎖️</span>
+            <img src="UI Assets/Header_icon_AB_FINAL.png" alt="Trophy" class="section-crown">
                 Achievement Badges
             </h2>
 
