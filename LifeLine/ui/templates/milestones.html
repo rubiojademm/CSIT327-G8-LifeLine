@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/milestones.css' %}">
+
+<div class="milestones-container">
+  <h2 class="page-title">Your Milestones</h2>
+
+  <div class="milestone-grid">
+    {% for data in milestones %}
+    <div class="milestone-card {% if data.unlocked %}unlocked{% else %}locked{% endif %}">
+        <h3>{{ data.milestone.title }}</h3>
+        <p>{{ data.milestone.description }}</p>
+
+        {% if data.unlocked %}
+          <span class="badge unlocked-badge">Unlocked</span>
+          <small>{{ data.date|date:"M d, Y" }}</small>
+        {% else %}
+          <span class="badge locked-badge">Locked</span>
+          <small>Target: {{ data.milestone.required_value }}</small>
+        {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

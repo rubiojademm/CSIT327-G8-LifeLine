@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.utils import timezone
 from django.db.models import Q
 from .models import Goal
+from .models import Milestone, UserMilestone
 
 @login_required
 def dashboard(request):
@@ -109,3 +112,29 @@ def delete_goal(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
     goal.delete()
     return redirect("goals_page")
+
+
+@login_required
+def milestones_page(request):
+    milestones = Milestone.objects.all()
+    user_milestones = UserMilestone.objects.filter(
+        user=request.user,
+        milestone__in=milestones
+    )
+
+    milestone_map = {
+        um.milestone_id: um for um in user_milestones
+    }
+
+    final_data = []
+    for m in milestones:
+        user_m = milestone_map.get(m.id)
+        final_data.append({
+            "milestone": m,
+            "unlocked": user_m.unlocked if user_m else False,
+            "date": user_m.unlocked_at if user_m else None
+        })
+
+    return render(request, "milestones.html", {
+        "milestones": final_data
+    })

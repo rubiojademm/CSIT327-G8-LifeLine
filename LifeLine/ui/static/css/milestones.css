@@ -1,0 +1,51 @@
+.milestones-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.milestone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.milestone-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border-left: 6px solid #22c55e;
+}
+
+.milestone-card.locked {
+  opacity: 0.5;
+  border-left: 6px solid #aaa;
+}
+
+.milestone-card h3 {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+}
+
+.unlocked-badge {
+  background: #22c55e;
+  color: white;
+}
+
+.locked-badge {
+  background: #aaa;
+  color: white;
+}
