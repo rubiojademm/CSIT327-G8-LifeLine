@@ -7,4 +7,5 @@ urlpatterns = [
     path("create/", views.create_goal, name="create_goal"),
     path("update-progress/<int:pk>/", views.update_progress, name="update_progress"),
     path("<int:pk>/delete/", views.delete_goal, name="delete_goal"),
+    path("milestones/", views.milestones_page, name="milestones_page"),
 ]
