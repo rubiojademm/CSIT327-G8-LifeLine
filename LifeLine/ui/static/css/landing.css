@@ -1,161 +1,556 @@
+/* ============================================
+   LIFELINE LANDING PAGE - CSS STYLES
+   Modern, animated landing page with glassmorphism
+   ============================================ */
+
+/* ============================================
+   GLOBAL STYLES & RESET
+   Base styles for the entire page
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom right, #f9fafb, #ecfdf5);
   color: #1a1a1a;
+  overflow-x: hidden;
+  position: relative;
 }
 
+/* ============================================
+   ANIMATED BACKGROUND
+   Moving gradient from top-left to bottom-right
+   ============================================ */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(135deg, #f9fafb 0%, #ecfdf5 50%, #d1fae5 100%);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+
+/* Gradient animation - continuous movement */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* ============================================
+   FLOATING PARTICLES
+   Decorative background elements
+   ============================================ */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.15;
+  animation: float 20s infinite ease-in-out;
+}
+
+/* First particle - top left */
+.particle:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  background: #27ae60;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+/* Second particle - bottom right */
+.particle:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  background: #2ecc71;
+  top: 60%;
+  left: 80%;
+  animation-delay: 4s;
+}
+
+/* Third particle - bottom left */
+.particle:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  background: #27ae60;
+  top: 80%;
+  left: 20%;
+  animation-delay: 8s;
+}
+
+/* Floating animation for particles */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+/* ============================================
+   MAIN CONTAINER
+   Primary layout wrapper
+   ============================================ */
 .landing-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
-/* Header */
+/* ============================================
+   HEADER SECTION
+   Top navigation bar
+   ============================================ */
 .landing-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 1.5rem 3rem;
+  animation: slideDown 0.8s ease-out;
 }
 
+/* Slide down animation for header */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo styling (optional) */
 .logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #27ae60;
 }
 
-.logo-icon {
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* ============================================
+   BUTTON STYLES - Outline variant
+   Used for Sign In and Learn More buttons
+   ============================================ */
 .btn-outline {
   border: 2px solid #27ae60;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
   text-decoration: none;
   color: #27ae60;
-  font-weight: 500;
-  transition: all 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-outline:hover {
+/* Slide-in background effect */
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
   background: #27ae60;
-  color: white;
+  transition: left 0.3s ease;
+  z-index: -1;
 }
 
-/* Hero Section */
+.btn-outline:hover::before {
+  left: 0;
+}
+
+/* Hover state for outline buttons */
+.btn-outline:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* ============================================
+   HERO SECTION
+   Main headline and value proposition
+   ============================================ */
 .hero {
   text-align: center;
-  max-width: 800px;
-  margin: 5rem auto;
-  padding: 0 1rem;
+  max-width: 900px;
+  margin: 4rem auto 6rem;
+  padding: 0 2rem;
+  animation: fadeInUp 1s ease-out 0.2s both;
 }
 
+/* Fade in and slide up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main headline styling */
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   line-height: 1.2;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
+/* Gradient text effect on highlighted words */
 .hero h1 span {
   background: linear-gradient(90deg, #27ae60, #2ecc71);
   -webkit-background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s infinite linear;
+  background-size: 200% auto;
 }
 
+/* Shimmer animation for gradient text */
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Hero description text */
 .hero p {
-  margin: 1rem 0 2rem;
+  margin: 1.5rem auto 2.5rem;
   color: #4b5563;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  max-width: 700px;
 }
 
+/* Button container in hero */
 .hero-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
+/* ============================================
+   BUTTON STYLES - Primary variant
+   Main call-to-action button
+   ============================================ */
 .btn-primary {
   background: linear-gradient(90deg, #27ae60, #2ecc71);
   color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  padding: 1rem 2rem;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Ripple effect on hover */
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hover state for primary button */
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(39, 174, 96, 0.4);
 }
 
-/* Features */
+/* ============================================
+   FEATURES SECTION
+   Three-column feature showcase
+   ============================================ */
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  max-width: 1000px;
-  margin: 4rem auto;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 6rem auto;
   padding: 0 2rem;
 }
 
+/* Individual feature card */
 .feature {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  border-radius: 16px;
+  padding: 2.5rem;
   text-align: center;
-  transition: 0.3s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: fadeInUp 0.8s ease-out both;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Staggered animation delays for each feature */
+.feature:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.feature:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.feature:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+/* Gradient overlay on hover */
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Hover effect for feature cards */
 .feature:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 20px rgba(39, 174, 96, 0.15);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(39, 174, 96, 0.2);
 }
 
+.feature:hover::before {
+  opacity: 1;
+}
+
+/* Feature icon styling */
 .feature-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #27ae60;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  animation: bounce 2s infinite;
 }
 
-/* CTA */
+/* Bounce animation for icons */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Icon animation on card hover */
+.feature:hover .feature-icon {
+  animation: none;
+  transform: scale(1.2) rotate(5deg);
+  transition: transform 0.3s ease;
+}
+
+/* Feature heading */
+.feature h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* Feature description */
+.feature p {
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* ============================================
+   CTA SECTION
+   Call-to-action banner
+   ============================================ */
 .cta {
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
   color: white;
   text-align: center;
-  padding: 4rem 2rem;
-  border-radius: 16px;
-  margin: 4rem auto;
-  max-width: 900px;
+  padding: 5rem 2rem;
+  border-radius: 20px;
+  margin: 4rem auto 6rem;
+  max-width: 1000px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out 0.9s both;
 }
 
+/* Animated dot pattern background */
+.cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: patternMove 20s linear infinite;
+}
+
+/* Pattern movement animation */
+@keyframes patternMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* CTA heading */
+.cta h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* CTA description */
+.cta p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  margin-bottom: 2rem;
+  opacity: 0.95;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   BUTTON STYLES - Secondary variant
+   White button on colored background
+   ============================================ */
 .btn-secondary {
   background: white;
   color: #27ae60;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  padding: 1rem 2rem;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Hover state for secondary button */
 .btn-secondary:hover {
   background: #f9fafb;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Footer */
+/* ============================================
+   FOOTER SECTION
+   Copyright and legal information
+   ============================================ */
 .landing-footer {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   color: #6b7280;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  margin-top: auto;
+}
+
+.landing-footer p {
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   Mobile and tablet optimizations
+   ============================================ */
+@media (max-width: 768px) {
+  /* Adjust header padding for mobile */
+  .landing-header {
+    padding: 1rem 1.5rem;
+  }
+
+  /* Reduce hero margins on mobile */
+  .hero {
+    margin: 2rem auto 4rem;
+  }
+
+  /* Adjust feature grid spacing */
+  .features {
+    gap: 1.5rem;
+    margin: 4rem auto;
+  }
+
+  /* Reduce feature card padding */
+  .feature {
+    padding: 2rem;
+  }
+
+  /* Adjust CTA section for mobile */
+  .cta {
+    padding: 3rem 1.5rem;
+    margin: 3rem 1rem 4rem;
+  }
+
+  /* Stack buttons vertically on mobile */
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Full-width buttons on mobile */
+  .btn-primary,
+  .btn-outline,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
 }

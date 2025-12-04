@@ -1,15 +1,49 @@
+<!-- ============================================
+     LIFELINE LANDING PAGE - HTML STRUCTURE
+     This is the Django template for the landing page
+     ============================================ -->
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+<!-- Link to external CSS file -->
 <link rel="stylesheet" href="{% static 'css/landing.css' %}">
 
+<!-- ============================================
+     ANIMATED BACKGROUND LAYER
+     Fixed background with gradient animation
+     ============================================ -->
+<div class="animated-background"></div>
+
+<!-- ============================================
+     FLOATING PARTICLES
+     Decorative elements for visual depth
+     ============================================ -->
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+
+<!-- ============================================
+     MAIN LANDING PAGE CONTAINER
+     ============================================ -->
 <div class="landing-page">
-  <!-- Header -->
+  
+  <!-- ============================================
+       HEADER SECTION
+       Navigation bar with Sign In button
+       ============================================ -->
   <header class="landing-header">
+    <!-- Optional: Add logo here if needed -->
+    <!-- <div class="logo">LifeLine</div> -->
+    <div></div> <!-- Spacer for flex layout -->
     <a href="{% url 'login' %}" class="btn-outline">Sign In</a>
   </header>
 
-  <!-- Hero -->
+  <!-- ============================================
+       HERO SECTION
+       Main value proposition and primary CTA
+       ============================================ -->
   <section class="hero">
     <h1>Track Your <span>Personal Growth</span> Journey</h1>
     <p>
@@ -18,22 +52,30 @@
     </p>
     <div class="hero-buttons">
       <a href="{% url 'register' %}" class="btn-primary">Get Started Free →</a>
-      <a href="#" class="btn-outline">Learn More</a>
+      <a href="#features" class="btn-outline">Learn More</a>
     </div>
   </section>
 
-  <!-- Features -->
-  <section class="features">
+  <!-- ============================================
+       FEATURES SECTION
+       Three key benefits of the platform
+       ============================================ -->
+  <section class="features" id="features">
+    <!-- Feature 1: Goal Setting -->
     <div class="feature">
       <div class="feature-icon">🎯</div>
       <h3>Set & Track Goals</h3>
       <p>Define clear objectives and monitor your progress with visual indicators.</p>
     </div>
+
+    <!-- Feature 2: Analytics -->
     <div class="feature">
       <div class="feature-icon">📈</div>
       <h3>Monitor Growth</h3>
       <p>Visualize your progress with detailed analytics and growth summaries.</p>
     </div>
+
+    <!-- Feature 3: Motivation -->
     <div class="feature">
       <div class="feature-icon">👥</div>
       <h3>Stay Motivated</h3>
@@ -41,7 +83,10 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- ============================================
+       CTA SECTION
+       Final call-to-action banner
+       ============================================ -->
   <section class="cta">
     <h2>Ready to Transform Your Life?</h2>
     <p>
@@ -50,9 +95,16 @@
     <a href="{% url 'register' %}" class="btn-secondary">Start Your Journey Today →</a>
   </section>
 
-  <!-- Footer -->
+  <!-- ============================================
+       FOOTER SECTION
+       Copyright and legal information
+       ============================================ -->
   <footer class="landing-footer">
     <p>&copy; 2025 LifeLine. Built with care for your personal growth journey.</p>
   </footer>
 </div>
+
+<!-- Link to external JavaScript file -->
+<script src="{% static 'js/landing.js' %}"></script>
+
 {% endblock %}
