@@ -87,3 +87,9 @@ class UserMilestone(models.Model):
         indexes = [
             models.Index(fields=["user", "milestone"]),
         ]
+
+
+class GoalProgressLog(models.Model):
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
+    progress = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)

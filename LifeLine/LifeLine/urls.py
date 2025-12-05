@@ -18,11 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 
 from users import views as user_views
+from goals import views as goal_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('goals/', include('goals.urls')),
+
+    path("reports/", goal_views.reports_page, name="reports"),
+    path("reports/timeline/", goal_views.report_timeline),
+    path("reports/status/", goal_views.report_status),
+    path("reports/categories/", goal_views.report_categories),
+    path("reports/completions/", goal_views.report_completions),
 
     path('', user_views.landing, name='landing'),
     path('admin-dashboard/', user_views.admin_dashboard, name='admin_dashboard'),
