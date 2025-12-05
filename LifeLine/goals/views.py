@@ -3,9 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
 from django.db.models import Q
-from .models import Goal
+from django.http import JsonResponse
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+from .models import Goal, GoalProgressLog
 from .models import Milestone, UserMilestone
 
+
+# DASHBOARD PAGE #
 @login_required
 def dashboard(request):
     user_goals = Goal.objects.filter(user=request.user)
@@ -37,6 +42,7 @@ def dashboard(request):
     return render(request, "dashboard.html", context)
 
 
+# GOALS PAGE #
 @login_required
 def goals_page(request):
     user = request.user
@@ -114,6 +120,7 @@ def delete_goal(request, pk):
     return redirect("goals_page")
 
 
+# ACHIEVEMENT PAGE #
 @login_required
 def milestones_page(request):
     milestones = Milestone.objects.all()
@@ -138,3 +145,62 @@ def milestones_page(request):
     return render(request, "milestones.html", {
         "milestones": final_data
     })
+
+
+# REPORTS PAGE #
+@login_required
+def reports_page(request):
+    return render(request, "reports.html")
+
+
+# TIMELINE CHART
+@login_required
+def report_timeline(request):
+    goals = Goal.objects.filter(user=request.user).order_by("created_at")
+
+    data = {
+        "labels": [g.created_at.strftime("%Y-%m-%d") for g in goals],
+        "values": list(range(1, goals.count() + 1)),
+    }
+
+    return JsonResponse(data)
+
+
+# STATUS DISTRIBUTION
+@login_required
+def report_status(request):
+    data = (
+        Goal.objects.filter(user=request.user)
+        .values("status")
+        .annotate(total=Count("status"))
+    )
+
+    return JsonResponse(list(data), safe=False)
+
+
+# CATEGORY DISTRIBUTION
+@login_required
+def report_categories(request):
+    data = (
+        Goal.objects.filter(user=request.user)
+        .values("category")
+        .annotate(total=Count("category"))
+    )
+
+    return JsonResponse(list(data), safe=False)
+
+
+# COMPLETION COUNTS
+@login_required
+def report_completions(request):
+    completed = Goal.objects.filter(user=request.user, status="Completed").count()
+    pending = Goal.objects.filter(user=request.user).exclude(
+        status="Completed"
+    ).count()
+
+    return JsonResponse(
+        {
+            "completed": completed,
+            "pending": pending,
+        }
+    )

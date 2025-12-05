@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reports.css' %}">
+
+<div class="reports-container">
+
+    <div class="reports-header">
+        <h1>Growth Summary</h1>
+        <p>Track your goal progress, completion, and growth over time</p>
+    </div>
+
+    <div class="reports-grid">
+
+        <!-- TIMELINE -->
+        <div class="report-card">
+            <h3>Goal Creation Timeline</h3>
+            <canvas id="timelineChart"></canvas>
+        </div>
+
+        <!-- STATUS -->
+        <div class="report-card">
+            <h3>Goal Status Distribution</h3>
+            <canvas id="statusChart"></canvas>
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="report-card">
+            <h3>Goal Categories</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+
+        <!-- COMPLETIONS -->
+        <div class="report-card">
+            <h3>Completion Summary</h3>
+            <canvas id="completionChart"></canvas>
+
+            <div class="stats-box">
+                <div class="stat-item">
+                    <h2 id="completedCount">0</h2>
+                    <span>Completed</span>
+                </div>
+                <div class="stat-item">
+                    <h2 id="pendingCount">0</h2>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/reports.js' %}"></script>
+
+{% endblock %}

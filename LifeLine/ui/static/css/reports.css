@@ -1,0 +1,119 @@
+/* Global */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f4f9f6;
+    color: #1f2937; /* match dashboard neutral dark */
+}
+
+/* Container */
+.reports-container {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 2rem;
+}
+
+/* Header */
+.reports-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.reports-header h1 {
+    color: #16a34a; /* dashboard green */
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.reports-header p {
+    color: #6b7280;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Grid layout */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+}
+
+/* Report Cards */
+.report-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-top: 4px solid #16a34a;
+}
+
+.report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.report-card h3 {
+    margin-bottom: 1.5rem;
+    color: #14532d;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Charts */
+canvas {
+    max-height: 300px;
+}
+
+/* Completion Stats Box */
+.stats-box {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    background: #f0fdf4; /* light green background */
+    padding: 1.2rem 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+    cursor: default;
+}
+
+.stat-item:hover {
+    transform: scale(1.05);
+}
+
+.stat-item h2 {
+    margin: 0;
+    color: #16a34a;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stat-item span {
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .reports-container {
+        padding: 1rem;
+    }
+
+    .report-card {
+        padding: 1rem 1.5rem;
+    }
+
+    .stat-item {
+        padding: 1rem 1.5rem;
+    }
+}

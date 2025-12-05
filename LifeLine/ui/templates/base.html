@@ -28,7 +28,7 @@
           <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Profile</a>
           <a href="{% url 'goals_page' %}" class="{% if request.resolver_match.url_name == 'goals_page' %}active{% endif %}">Goals</a>
           <a href="{% url 'milestones_page' %}" class="{% if request.resolver_match.url_name == 'milestones_page' %}active{% endif %}">Milestones</a>
-          <a href="#" class="disabled">Growth Summary</a>
+          <a href="{% url 'reports' %}" class="{% if request.resolver_match.url_name == 'reports' %}active{% endif %}">Growth Summary</a>
           <a href="{% url 'logout' %}" class="logout-link">Logout</a>
         {% endif %}
       </div>
