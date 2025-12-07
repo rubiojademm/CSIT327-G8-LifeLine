@@ -3,89 +3,264 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/goals_page.css' %}">
 
+<!-- ============================================
+     GOALS PAGE CONTAINER - START
+     Main wrapper for the entire goals page
+     ============================================ -->
 <div class="goals-container">
 
-  <!-- Header -->
+  <!-- ============================================
+       PAGE HEADER SECTION - START
+       Title, subtitle, and create button
+       ============================================ -->
   <div class="header-row">
-    <div>
-      <h2 class="title">Your Goals</h2>
-      <p class="subtitle">Track and achieve your goals</p>
+    <div class="header-content">
+      <div class="header-icon">🎯</div>
+      <div>
+        <h2 class="title">Your Goals</h2>
+        <p class="subtitle">Track and achieve your personal growth journey</p>
+      </div>
     </div>
-    <button onclick="openCreateGoalModal()" class="btn-primary">Create Goal</button>
+    <button onclick="openCreateGoalModal()" class="btn-primary">
+      <span class="btn-icon">✨</span>
+      Create Goal
+    </button>
   </div>
+  <!-- PAGE HEADER SECTION - END -->
 
-  <!-- Filters -->
+  <!-- ============================================
+       STATS CARDS SECTION - START
+       Quick overview statistics
+       ============================================ -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ goals.count }}</div>
+        <div class="stat-label">Total Goals</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ active_goals_count|default:0 }}</div>
+        <div class="stat-label">Active Goals</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ completed_goals_count|default:0 }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">📈</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ average_progress|default:0 }}%</div>
+        <div class="stat-label">Avg Progress</div>
+      </div>
+    </div>
+  </div>
+  <!-- STATS CARDS SECTION - END -->
+
+  <!-- ============================================
+       FILTERS SECTION - START
+       Search and filter controls
+       ============================================ -->
   <div class="filters-card">
+    <div class="filters-header">
+      <span class="filters-title">🔍 Filter Goals</span>
+      {% if search or category != 'All' or status != 'All' %}
+        <a href="{% url 'goals' %}" class="clear-filters">Clear all filters</a>
+      {% endif %}
+    </div>
+    
     <form method="GET" class="filters-grid">
+      <!-- Search Input -->
+      <div class="input-wrapper">
+        <span class="input-icon">🔎</span>
+        <input 
+          type="text" 
+          name="search" 
+          placeholder="Search goals..." 
+          value="{{ search }}" 
+          class="input input-with-icon"
+        />
+      </div>
 
-      <input type="text" name="search" placeholder="Search goals..." value="{{ search }}" class="input"/>
+      <!-- Category Filter -->
+      <div class="input-wrapper">
+        <span class="input-icon">📁</span>
+        <select name="category" class="input input-with-icon">
+          {% for c in categories %}
+          <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-      <!-- Category -->
-      <select name="category" class="input">
-        {% for c in categories %}
-        <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
-        {% endfor %}
-      </select>
+      <!-- Status Filter -->
+      <div class="input-wrapper">
+        <span class="input-icon">📌</span>
+        <select name="status" class="input input-with-icon">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if s == status %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-      <!-- Status -->
-      <select name="status" class="input">
-        {% for s in statuses %}
-        <option value="{{ s }}" {% if s == status %}selected{% endif %}>{{ s }}</option>
-        {% endfor %}
-      </select>
-
-      <button class="btn-secondary">Apply</button>
+      <!-- Apply Button -->
+      <button type="submit" class="btn-secondary">
+        <span>Apply Filters</span>
+      </button>
     </form>
   </div>
+  <!-- FILTERS SECTION - END -->
 
-  <!-- Goals Grid -->
+  <!-- ============================================
+       GOALS GRID SECTION - START
+       Display all goal cards
+       ============================================ -->
   {% if goals %}
+  <div class="goals-header-info">
+    <h3 class="section-title">Your Goals ({{ goals.count }})</h3>
+    <div class="view-toggle">
+      <button class="view-btn active" data-view="grid">
+        <span>📱</span> Grid
+      </button>
+      <button class="view-btn" data-view="list">
+        <span>📋</span> List
+      </button>
+    </div>
+  </div>
+
   <div class="goals-grid">
     {% for goal in goals %}
-    <div class="goal-card">
-
+    <!-- Individual Goal Card -->
+    <div class="goal-card" data-status="{{ goal.status }}">
+      
+      <!-- Goal Card Header -->
       <div class="goal-header">
-        <h3 class="goal-title">{{ goal.title }}</h3>
-        <a href="{% url 'delete_goal' goal.id %}" class="delete-btn">Delete</a>
+        <div class="goal-title-wrapper">
+          <h3 class="goal-title">{{ goal.title }}</h3>
+          <span class="goal-cat">{{ goal.category }}</span>
+        </div>
+        <div class="goal-actions">
+          <button class="action-btn edit-btn" onclick="openUpdateModal({{ goal.id }}, {{ goal.progress }})" title="Update Progress">
+            ✏️
+          </button>
+          <a href="{% url 'delete_goal' goal.id %}" class="action-btn delete-btn" title="Delete Goal" onclick="return confirm('Are you sure you want to delete this goal?')">
+            🗑️
+          </a>
+        </div>
       </div>
 
-      <p class="goal-desc">{{ goal.description }}</p>
-      <p class="goal-cat">{{ goal.category }}</p>
-
-      <div class="progress-label">
-        <span>Progress</span>
-        <span class="status-tag">{{ goal.status }}</span>
-      </div>
-
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: {{ goal.progress }}%;"></div>
-      </div>
-
-      <div class="progress-footer">
-        <span>{{ goal.progress }}% complete</span>
-        <button class="btn-small" onclick="openUpdateModal({{ goal.id }}, {{ goal.progress }})">Update</button>
-      </div>
-
-      <p class="date-sm">Created: {{ goal.created_at|date:"M j, Y" }}</p>
-
-      {% if goal.target_date %} 
-        <p class="date-sm">Target: {{ goal.target_date|date:"M j, Y" }}</p>
+      <!-- Goal Description -->
+      {% if goal.description %}
+      <p class="goal-desc">{{ goal.description|truncatewords:20 }}</p>
       {% endif %}
+
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">Progress</span>
+          <span class="progress-percentage">{{ goal.progress }}%</span>
+        </div>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ goal.progress }}%;">
+            <div class="progress-shine"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goal Footer with Status and Dates -->
+      <div class="goal-footer">
+        <div class="footer-row">
+          <span class="status-tag status-{{ goal.status|lower }}">
+            {% if goal.status == 'Not Started' %}
+              🔵 {{ goal.status }}
+            {% elif goal.status == 'In Progress' %}
+              🟡 {{ goal.status }}
+            {% elif goal.status == 'Completed' %}
+              🟢 {{ goal.status }}
+            {% else %}
+              ⚪ {{ goal.status }}
+            {% endif %}
+          </span>
+          
+          {% if goal.target_date %}
+          <span class="date-badge">
+            🗓️ {{ goal.target_date|date:"M j, Y" }}
+          </span>
+          {% endif %}
+        </div>
+        
+        <div class="footer-row">
+          <span class="date-sm">
+            📅 Created {{ goal.created_at|date:"M j, Y" }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Update Button -->
+      <button class="btn-update" onclick="openUpdateModal({{ goal.id }}, {{ goal.progress }})">
+        <span>📊</span> Update Progress
+      </button>
+
     </div>
     {% endfor %}
   </div>
+  <!-- GOALS GRID SECTION - END -->
+
   {% else %}
-    <div class="no-goals">
-      <p>No goals found.</p>
+  <!-- ============================================
+       EMPTY STATE - START
+       Displayed when no goals exist
+       ============================================ -->
+  <div class="no-goals">
+    <div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <h3 class="empty-title">No goals yet</h3>
+      <p class="empty-text">Start your journey by creating your first goal!</p>
+      <button onclick="openCreateGoalModal()" class="btn-primary btn-large">
+        <span class="btn-icon">✨</span>
+        Create Your First Goal
+      </button>
     </div>
+  </div>
+  <!-- EMPTY STATE - END -->
   {% endif %}
 
 </div>
+<!-- GOALS PAGE CONTAINER - END -->
 
+<!-- Include Modal Templates -->
 {% include "goals_update_modal.html" %}
 {% include "goals_create_modal.html" %}
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static 'js/goals_modal.js' %}" defer></script>
+<script>
+  // View Toggle Functionality
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      const view = this.dataset.view;
+      const grid = document.querySelector('.goals-grid');
+      
+      if (view === 'list') {
+        grid.classList.add('list-view');
+      } else {
+        grid.classList.remove('list-view');
+      }
+    });
+  });
+</script>
 {% endblock %}

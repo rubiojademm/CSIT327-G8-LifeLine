@@ -1,0 +1,381 @@
+/* ============================================
+   UPDATE PROGRESS MODAL - CSS STYLES
+   Interactive progress tracking with animations
+   ============================================ */
+
+/* Note: Include create_goal_modal.css first for base modal styles */
+
+/* ============================================
+   PROGRESS ICON STYLING
+   ============================================ */
+.progress-icon {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.progress-icon svg {
+  stroke: #f59e0b;
+}
+
+.progress-ring {
+  position: absolute;
+  inset: -10px;
+}
+
+.progress-ring circle {
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* ============================================
+   PROGRESS DISPLAY
+   ============================================ */
+.progress-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-radius: 16px;
+  margin-bottom: 1rem;
+}
+
+.progress-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.progress-stat.highlight .stat-value {
+  color: #f59e0b;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.progress-arrow {
+  font-size: 2rem;
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* ============================================
+   VISUAL PROGRESS BAR
+   ============================================ */
+.visual-progress {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar-container {
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 40px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  border-radius: 20px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill.low-progress {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+
+.progress-bar-fill.medium-progress {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.progress-bar-fill.high-progress {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-percentage {
+  font-weight: 700;
+  color: white;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.progress-markers {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* ============================================
+   PROGRESS SLIDER
+   ============================================ */
+.slider-wrapper {
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.progress-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 10px;
+  background: #e5e7eb;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+  transition: all 0.3s ease;
+}
+
+.progress-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.5);
+}
+
+.progress-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+  transition: all 0.3s ease;
+}
+
+.progress-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.5);
+}
+
+/* ============================================
+   INCREMENT BUTTONS
+   ============================================ */
+.input-with-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-with-buttons input {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fafafa;
+  transition: all 0.3s ease;
+}
+
+.input-with-buttons input:focus {
+  outline: none;
+  border-color: #16a34a;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+}
+
+.increment-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #16a34a;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.increment-btn:hover {
+  background: #16a34a;
+  transform: scale(1.1);
+}
+
+.increment-btn:hover svg {
+  stroke: white;
+}
+
+.increment-btn svg {
+  stroke: #16a34a;
+  transition: stroke 0.3s ease;
+}
+
+/* ============================================
+   QUICK PRESETS
+   ============================================ */
+.quick-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.presets-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.preset-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 0.6rem 1rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.preset-btn:hover {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   MOTIVATION MESSAGE
+   ============================================ */
+.motivation-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 12px;
+  border-left: 4px solid #f59e0b;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.motivation-message svg {
+  stroke: #f59e0b;
+  flex-shrink: 0;
+}
+
+.motivation-message span {
+  font-weight: 500;
+  color: #92400e;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+  .progress-display {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .progress-arrow {
+    transform: rotate(90deg);
+  }
+
+  .preset-buttons {
+    justify-content: space-between;
+  }
+
+  .preset-btn {
+    flex: 1 1 calc(33.333% - 0.5rem);
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .progress-bar-bg {
+    height: 32px;
+  }
+}

@@ -3,25 +3,345 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/milestones.css' %}">
 
+<!-- ============================================
+     MILESTONES PAGE CONTAINER - START
+     Main wrapper for the milestones page
+     ============================================ -->
 <div class="milestones-container">
-  <h2 class="page-title">Your Milestones</h2>
 
+  <!-- ============================================
+       PAGE HEADER - START
+       Title, subtitle, and add button
+       ============================================ -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">🏆</div>
+      <div>
+        <h2 class="page-title">Your Milestones</h2>
+        <p class="page-subtitle">Track your achievements and life events</p>
+      </div>
+    </div>
+    <button class="btn-add-milestone" onclick="openMilestoneModal()">
+      <span>✨</span> Add Milestone
+    </button>
+  </div>
+  <!-- PAGE HEADER - END -->
+
+  <!-- ============================================
+       STATS OVERVIEW - START
+       Quick statistics cards
+       ============================================ -->
+  <div class="stats-overview">
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ milestones.count|default:0 }}</div>
+        <div class="stat-label">Total Milestones</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ unlocked_count|default:0 }}</div>
+        <div class="stat-label">Achieved</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ locked_count|default:0 }}</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ achievement_rate|default:0 }}%</div>
+        <div class="stat-label">Success Rate</div>
+      </div>
+    </div>
+  </div>
+  <!-- STATS OVERVIEW - END -->
+
+  <!-- ============================================
+       CATEGORY FILTERS - START
+       Filter buttons for milestone categories
+       ============================================ -->
+  <div class="category-filters">
+    <span class="filter-label">📁 Categories:</span>
+    <button class="category-btn active" onclick="filterCategory('all', this)">
+      🌐 All
+    </button>
+    <button class="category-btn" onclick="filterCategory('education', this)">
+      🎓 Education
+    </button>
+    <button class="category-btn" onclick="filterCategory('career', this)">
+      💼 Career
+    </button>
+    <button class="category-btn" onclick="filterCategory('personal', this)">
+      ⭐ Personal
+    </button>
+    <button class="category-btn" onclick="filterCategory('travel', this)">
+      ✈️ Travel
+    </button>
+    <button class="category-btn" onclick="filterCategory('skills', this)">
+      🎯 Skills
+    </button>
+  </div>
+  <!-- CATEGORY FILTERS - END -->
+
+  <!-- ============================================
+       MILESTONE GRID - START
+       Display all milestone cards
+       ============================================ -->
+  {% if milestones %}
   <div class="milestone-grid">
     {% for data in milestones %}
-    <div class="milestone-card {% if data.unlocked %}unlocked{% else %}locked{% endif %}">
-        <h3>{{ data.milestone.title }}</h3>
-        <p>{{ data.milestone.description }}</p>
+    <div class="milestone-card {% if data.unlocked %}unlocked{% else %}locked{% endif %}" 
+         data-category="{{ data.category|lower }}">
+      
+      <!-- Category Badge -->
+      <span class="milestone-category">
+        {% if data.category == 'Education' %}🎓
+        {% elif data.category == 'Career' %}💼
+        {% elif data.category == 'Personal' %}⭐
+        {% elif data.category == 'Travel' %}✈️
+        {% elif data.category == 'Skills' %}🎯
+        {% else %}📌{% endif %}
+        {{ data.category }}
+      </span>
 
-        {% if data.unlocked %}
-          <span class="badge unlocked-badge">Unlocked</span>
-          <small>{{ data.date|date:"M d, Y" }}</small>
-        {% else %}
-          <span class="badge locked-badge">Locked</span>
-          <small>Target: {{ data.milestone.required_value }}</small>
-        {% endif %}
+      <!-- Milestone Header -->
+      <div class="milestone-header">
+        <div class="milestone-title-section">
+          <h3 class="milestone-title">{{ data.milestone.title }}</h3>
+          <p class="milestone-description">{{ data.milestone.description }}</p>
+        </div>
+        
+        <div class="milestone-actions">
+          <button class="action-btn edit-btn" onclick="editMilestone({{ data.id }})" title="Edit">
+            ✏️
+          </button>
+          <button class="action-btn delete-btn" onclick="deleteMilestone({{ data.id }})" title="Delete">
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <!-- Personal Experience -->
+      {% if data.experience %}
+      <div class="milestone-experience">
+        <div class="experience-label">Personal Reflection</div>
+        <div class="experience-text">"{{ data.experience }}"</div>
+      </div>
+      {% endif %}
+
+      <!-- Skills -->
+      {% if data.skills %}
+      <div class="milestone-skills">
+        {% for skill in data.skills.split:',' %}
+        <span class="skill-tag">{{ skill|trim }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Footer with Status and Date -->
+      <div class="milestone-footer">
+        <div class="milestone-date">
+          {% if data.unlocked %}
+            📅 {{ data.date|date:"M d, Y" }}
+          {% else %}
+            🎯 Target: {{ data.target_date|date:"M d, Y" }}
+          {% endif %}
+        </div>
+        
+        <span class="milestone-badge {% if data.unlocked %}badge-unlocked{% else %}badge-locked{% endif %}">
+          {% if data.unlocked %}✅ Unlocked{% else %}🔒 Locked{% endif %}
+        </span>
+      </div>
+
     </div>
     {% endfor %}
   </div>
+  <!-- MILESTONE GRID - END -->
+
+  {% else %}
+  <!-- ============================================
+       EMPTY STATE - START
+       Displayed when no milestones exist
+       ============================================ -->
+  <div class="empty-state">
+    <div class="empty-icon">🏆</div>
+    <h3 class="empty-title">No milestones yet</h3>
+    <p class="empty-text">Start tracking your achievements by creating your first milestone!</p>
+    <button class="btn-add-milestone" onclick="openMilestoneModal()">
+      <span>✨</span> Create First Milestone
+    </button>
+  </div>
+  <!-- EMPTY STATE - END -->
+  {% endif %}
+
 </div>
+<!-- MILESTONES PAGE CONTAINER - END -->
+
+<!-- ============================================
+     ADD MILESTONE MODAL - START
+     Modal for creating new milestones
+     ============================================ -->
+<div class="modal-overlay hidden" id="milestoneModal">
+  <div class="modal">
+    
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2>Add New Milestone</h2>
+      <p class="modal-subtitle">Record your achievements and experiences</p>
+    </div>
+    
+    <!-- Modal Form -->
+    <form method="POST" action="{% url 'create_milestone' %}">
+      {% csrf_token %}
+      
+      <div class="modal-body">
+        
+        <!-- Title Field -->
+        <div class="form-group">
+          <label>🏆 Title</label>
+          <input type="text" name="title" placeholder="e.g., Graduated from University" required>
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-group">
+          <label>📝 Description</label>
+          <textarea name="description" placeholder="Describe this milestone..."></textarea>
+        </div>
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label>📁 Category</label>
+          <select name="category" required>
+            <option value="">Select a category</option>
+            <option value="Education">🎓 Education</option>
+            <option value="Career">💼 Career</option>
+            <option value="Personal">⭐ Personal</option>
+            <option value="Travel">✈️ Travel</option>
+            <option value="Skills">🎯 Skills</option>
+          </select>
+        </div>
+
+        <!-- Personal Experience Field -->
+        <div class="form-group">
+          <label>💭 Personal Experience (Optional)</label>
+          <textarea name="experience" placeholder="Share your thoughts, feelings, or learnings from this achievement..."></textarea>
+        </div>
+
+        <!-- Skills Field -->
+        <div class="form-group">
+          <label>🎯 Skills Gained (Optional)</label>
+          <input type="text" name="skills" placeholder="e.g., Leadership, Python, Public Speaking (comma-separated)">
+        </div>
+
+        <!-- Date Field -->
+        <div class="form-group">
+          <label>📅 Date Achieved</label>
+          <input type="date" name="date" required>
+        </div>
+
+        <!-- Status Field -->
+        <div class="form-group">
+          <label>🔓 Status</label>
+          <select name="unlocked">
+            <option value="true">✅ Unlocked (Achieved)</option>
+            <option value="false">🔒 Locked (In Progress)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" onclick="closeMilestoneModal()">
+          Cancel
+        </button>
+        <button type="submit" class="btn-primary">
+          ✨ Save Milestone
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+<!-- ADD MILESTONE MODAL - END -->
+
+<script>
+  // ============================================
+  // MODAL CONTROLS - START
+  // ============================================
+  function openMilestoneModal() {
+    document.getElementById('milestoneModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMilestoneModal() {
+    document.getElementById('milestoneModal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Close modal on outside click
+  document.getElementById('milestoneModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeMilestoneModal();
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeMilestoneModal();
+    }
+  });
+  // MODAL CONTROLS - END
+
+  // ============================================
+  // CATEGORY FILTER - START
+  // ============================================
+  function filterCategory(category, btn) {
+    // Update active button
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Filter cards
+    const cards = document.querySelectorAll('.milestone-card');
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+  // CATEGORY FILTER - END
+
+  // ============================================
+  // MILESTONE ACTIONS - START
+  // ============================================
+  function editMilestone(id) {
+    // Implement edit functionality
+    console.log('Edit milestone:', id);
+    // You can redirect to edit page or open modal with pre-filled data
+    // window.location.href = `/milestones/${id}/edit/`;
+  }
+
+  function deleteMilestone(id) {
+    if (confirm('Are you sure you want to delete this milestone?')) {
+      // Implement delete functionality
+      console.log('Delete milestone:', id);
+      // window.location.href = `/milestones/${id}/delete/`;
+    }
+  }
+  // MILESTONE ACTIONS - END
+</script>
 
 {% endblock %}

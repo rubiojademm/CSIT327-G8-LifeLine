@@ -1,34 +1,174 @@
-<div id="updateProgressModal" class="goal-overlay hidden">
-  <div class="modal">
+<!-- ============================================
+     UPDATE PROGRESS MODAL - HTML
+     Interactive progress slider with visual feedback
+     ============================================ -->
 
-    <div class="modal-header">
-      <h2>Update Progress</h2>
-      <p class="muted">Adjust your current goal progress.</p>
+<div id="updateProgressModal" class="goal-overlay hidden">
+  <div class="modal update-progress-modal">
+
+    <!-- Close Button -->
+    <button type="button" class="modal-close" onclick="closeUpdateModal()" aria-label="Close modal">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Modal Icon with Progress Ring -->
+    <div class="modal-icon progress-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      <div class="progress-ring">
+        <svg width="80" height="80">
+          <circle cx="40" cy="40" r="35" fill="none" stroke="#e5e7eb" stroke-width="6"></circle>
+          <circle id="progressRingCircle" cx="40" cy="40" r="35" fill="none" stroke="#16a34a" stroke-width="6" 
+                  stroke-dasharray="220" stroke-dashoffset="220" transform="rotate(-90 40 40)"></circle>
+        </svg>
+      </div>
     </div>
 
-    <form method="POST" id="updateProgressForm">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2>Update Progress</h2>
+      <p class="muted">Adjust your current goal progress and track your journey.</p>
+    </div>
+
+    <!-- Modal Form -->
+    <form method="POST" id="updateProgressForm" class="modal-form">
       {% csrf_token %}
 
-      <div class="form-group">
-        <label>Current Progress</label>
-        <input type="text" id="currentProgressDisplay" disabled>
+      <!-- Current vs New Progress Display -->
+      <div class="progress-display">
+        <div class="progress-stat">
+          <span class="stat-label">Current</span>
+          <span class="stat-value" id="currentProgressValue">0%</span>
+        </div>
+        <div class="progress-arrow">→</div>
+        <div class="progress-stat highlight">
+          <span class="stat-label">New</span>
+          <span class="stat-value" id="newProgressValue">0%</span>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>New Progress (%)</label>
-        <input type="range" min="0" max="100" id="progress_slider">
+      <!-- Visual Progress Bar -->
+      <div class="visual-progress">
+        <div class="progress-bar-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="visualProgressBar" style="width: 0%;">
+              <span class="progress-percentage" id="progressPercentage">0%</span>
+            </div>
+          </div>
+        </div>
+        <div class="progress-markers">
+          <span>0%</span>
+          <span>25%</span>
+          <span>50%</span>
+          <span>75%</span>
+          <span>100%</span>
+        </div>
       </div>
 
+      <!-- Interactive Slider -->
       <div class="form-group">
-        <label>Or Enter Manually (%)</label>
-        <input type="number" name="progress" id="progress_input" min="0" max="100" required>
+        <label for="progress_slider">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          Drag to Adjust Progress
+        </label>
+        <div class="slider-wrapper">
+          <input 
+            type="range" 
+            min="0" 
+            max="100" 
+            id="progress_slider" 
+            class="progress-slider"
+            value="0"
+          >
+          <div class="slider-track"></div>
+        </div>
       </div>
 
+      <!-- Manual Input with Increment Buttons -->
+      <div class="form-group">
+        <label for="progress_input">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="9"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          Or Enter Manually (%)
+        </label>
+        <div class="input-with-buttons">
+          <button type="button" class="increment-btn" onclick="decrementProgress()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+          <input 
+            type="number" 
+            name="progress" 
+            id="progress_input" 
+            min="0" 
+            max="100" 
+            value="0"
+            required
+          >
+          <button type="button" class="increment-btn" onclick="incrementProgress()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+        <span class="input-hint">Enter a value between 0 and 100</span>
+      </div>
+
+      <!-- Quick Preset Buttons -->
+      <div class="quick-presets">
+        <span class="presets-label">Quick Presets:</span>
+        <div class="preset-buttons">
+          <button type="button" class="preset-btn" onclick="setProgress(0)">0%</button>
+          <button type="button" class="preset-btn" onclick="setProgress(25)">25%</button>
+          <button type="button" class="preset-btn" onclick="setProgress(50)">50%</button>
+          <button type="button" class="preset-btn" onclick="setProgress(75)">75%</button>
+          <button type="button" class="preset-btn" onclick="setProgress(100)">100%</button>
+        </div>
+      </div>
+
+      <!-- Motivational Message -->
+      <div class="motivation-message" id="motivationMessage">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+        </svg>
+        <span>Keep going! Every step counts.</span>
+      </div>
+
+      <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeUpdateModal()">Cancel</button>
-        <button type="submit" class="btn-primary">Update</button>
+        <button type="button" class="btn-secondary" onclick="closeUpdateModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <span>Cancel</span>
+        </button>
+        <button type="submit" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Update Progress</span>
+        </button>
       </div>
     </form>
-
   </div>
 </div>

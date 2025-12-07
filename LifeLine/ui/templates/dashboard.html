@@ -1,83 +1,310 @@
+<!-- ============================================
+     LIFELINE DASHBOARD - ENHANCED HTML
+     Modern dashboard with animations and interactivity
+     ============================================ -->
+
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- ============================================
+     ANIMATED BACKGROUND
+     Subtle gradient animation
+     ============================================ -->
+<div class="dashboard-background">
+  <div class="gradient-orb orb-1"></div>
+  <div class="gradient-orb orb-2"></div>
+  <div class="gradient-orb orb-3"></div>
+</div>
+
+<!-- ============================================
+     MAIN DASHBOARD CONTAINER
+     ============================================ -->
 <div class="dashboard-container">
 
-  <!-- Welcome Section -->
+  <!-- ============================================
+       WELCOME SECTION
+       Personalized greeting with user info
+       ============================================ -->
   <section class="welcome-card">
-    <h2>Welcome back!</h2>
-    <p>You're making great progress on your journey. Keep it up!</p>
-  </section>
-
-  <!-- Stats Grid -->
-  <section class="stats-grid">
-    <div class="stat-card">
-      <h4>Total Goals</h4>
-      <p class="stat-value">{{ stats.total_goals }}</p>
-      <span class="stat-note">+2 from last month</span>
-    </div>
-
-    <div class="stat-card">
-      <h4>Completed</h4>
-      <p class="stat-value">{{ stats.completed_goals }}</p>
-      <span class="stat-note">
-          {{ stats.completion_rate }}% completion rate
-      </span>
-    </div>
-
-    <div class="stat-card">
-      <h4>Achievements</h4>
-      <p class="stat-value">{{ stats.achievements }}</p>
-      <span class="stat-note">+3 this week</span>
-    </div>
-
-    <div class="stat-card">
-      <h4>Current Streak</h4>
-      <p class="stat-value">{{ stats.streak }} days</p>
-      <span class="stat-note">Keep it going!</span>
-    </div>
-  </section>
-
-  <!-- Goals and Achievements -->
-  <section class="two-grid">
-    <!-- Recent Goals -->
-    <div class="card">
-      <h3>Recent Goals</h3>
-      {% if recent_goals %}
-        {% for goal in recent_goals %}
-          <div class="goal-item">
-            <div class="goal-header">
-              <span>{{ goal.title }}</span>
-              <span class="goal-status {{ goal.status|slugify }}">{{ goal.status }}</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress" style="width: {{ goal.progress|default:0 }}%;"></div>
-            </div>
-            <small>{{ goal.progress }}% complete</small>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p class="empty-state">No goals yet. Create your first goal to get started!</p>
-      {% endif %}
-    </div>
-
-    <!-- Recent Achievements -->
-    <div class="card">
-      <h3>Recent Achievements</h3>
-      {% for achievement in recent_achievements %}
-        <div class="achievement-item">
-          <div class="icon">🏆</div>
-          <div>
-            <p class="achievement-title">{{ achievement.title }}</p>
-            <p class="achievement-date">{{ achievement.date }}</p>
-          </div>
+    <div class="welcome-content">
+      <div class="welcome-text">
+        <div class="greeting-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>{{ user.first_name|default:"User" }}</span>
         </div>
-      {% endfor %}
-      <button class="view-all-btn">View All Achievements</button>
+        <h2>Welcome back, {{ user.username }}! 👋</h2>
+        <p>You're making great progress on your journey. Keep pushing forward!</p>
+      </div>
+      <div class="welcome-illustration">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="50" fill="rgba(255,255,255,0.2)"/>
+          <path d="M60 30 L75 50 L60 45 L45 50 Z" fill="white"/>
+          <circle cx="60" cy="60" r="8" fill="white"/>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Quick action buttons -->
+    <div class="quick-actions">
+      <a href="{% url 'goals_page' %}" class="quick-action-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>New Goal</span>
+      </a>
+      <a href="{% url 'milestones_page' %}" class="quick-action-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span>Add Milestone</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STATS GRID
+       Key metrics and statistics
+       ============================================ -->
+  <section class="stats-grid">
+    <!-- Stat Card 1: Total Goals -->
+    <div class="stat-card" data-stat="goals">
+      <div class="stat-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="6"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h4>Total Goals</h4>
+        <p class="stat-value" data-count="{{ stats.total_goals }}">0</p>
+        <span class="stat-note stat-positive">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+          +2 from last month
+        </span>
+      </div>
+    </div>
+
+    <!-- Stat Card 2: Completed -->
+    <div class="stat-card" data-stat="completed">
+      <div class="stat-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h4>Completed</h4>
+        <p class="stat-value" data-count="{{ stats.completed_goals }}">0</p>
+        <span class="stat-note">
+          {{ stats.completion_rate }}% completion rate
+        </span>
+      </div>
+    </div>
+
+    <!-- Stat Card 3: Achievements -->
+    <div class="stat-card" data-stat="achievements">
+      <div class="stat-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="7"></circle>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h4>Achievements</h4>
+        <p class="stat-value" data-count="{{ stats.achievements }}">0</p>
+        <span class="stat-note stat-positive">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+          +3 this week
+        </span>
+      </div>
+    </div>
+
+    <!-- Stat Card 4: Current Streak -->
+    <div class="stat-card" data-stat="streak">
+      <div class="stat-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h4>Current Streak</h4>
+        <p class="stat-value" data-count="{{ stats.streak }}">0</p>
+        <span class="stat-note stat-streak">
+          🔥 Keep it going!
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GOALS AND ACHIEVEMENTS SECTION
+       Two-column layout
+       ============================================ -->
+  <section class="two-grid">
+    
+    <!-- ============================================
+         RECENT GOALS CARD
+         ============================================ -->
+    <div class="card goals-card">
+      <div class="card-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Recent Goals
+        </h3>
+        <a href="{% url 'goals_page' %}" class="view-all-link">View All →</a>
+      </div>
+      
+      <div class="goals-list">
+        {% if recent_goals %}
+          {% for goal in recent_goals %}
+            <div class="goal-item">
+              <div class="goal-header">
+                <span class="goal-title">{{ goal.title }}</span>
+                <span class="goal-status status-{{ goal.status|slugify }}">
+                  {{ goal.status }}
+                </span>
+              </div>
+              
+              <div class="goal-meta">
+                <span class="goal-category">{{ goal.category|default:"General" }}</span>
+                <span class="goal-deadline">Due: {{ goal.deadline|date:"M d, Y" }}</span>
+              </div>
+              
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress" style="width: {{ goal.progress|default:0 }}%;" data-progress="{{ goal.progress|default:0 }}"></div>
+                </div>
+                <span class="progress-label">{{ goal.progress|default:0 }}%</span>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <p>No goals yet</p>
+            <span>Create your first goal to get started!</span>
+            <a href="{% url 'goals_page' %}" class="empty-state-btn">Create Goal</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ============================================
+         RECENT ACHIEVEMENTS CARD
+         ============================================ -->
+    <div class="card achievements-card">
+      <div class="card-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="7"></circle>
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+          </svg>
+          Recent Achievements
+        </h3>
+        <button class="view-all-link">View All →</button>
+      </div>
+      
+      <div class="achievements-list">
+        {% if recent_achievements %}
+          {% for achievement in recent_achievements %}
+            <div class="achievement-item">
+              <div class="achievement-icon">
+                <span class="trophy-icon">🏆</span>
+                <div class="achievement-glow"></div>
+              </div>
+              <div class="achievement-content">
+                <p class="achievement-title">{{ achievement.title }}</p>
+                <p class="achievement-date">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  {{ achievement.date|date:"M d, Y" }}
+                </p>
+              </div>
+              <div class="achievement-badge">New</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="7"></circle>
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+            </svg>
+            <p>No achievements yet</p>
+            <span>Complete goals to unlock achievements!</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PROGRESS OVERVIEW SECTION
+       Visual progress chart
+       ============================================ -->
+  <section class="progress-overview">
+    <div class="card">
+      <div class="card-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          Weekly Progress
+        </h3>
+      </div>
+      <div class="progress-chart">
+        <div class="chart-bar" style="height: 60%;" data-day="Mon">
+          <span class="bar-value">6</span>
+        </div>
+        <div class="chart-bar" style="height: 80%;" data-day="Tue">
+          <span class="bar-value">8</span>
+        </div>
+        <div class="chart-bar" style="height: 45%;" data-day="Wed">
+          <span class="bar-value">4</span>
+        </div>
+        <div class="chart-bar" style="height: 90%;" data-day="Thu">
+          <span class="bar-value">9</span>
+        </div>
+        <div class="chart-bar" style="height: 70%;" data-day="Fri">
+          <span class="bar-value">7</span>
+        </div>
+        <div class="chart-bar" style="height: 55%;" data-day="Sat">
+          <span class="bar-value">5</span>
+        </div>
+        <div class="chart-bar active" style="height: 85%;" data-day="Sun">
+          <span class="bar-value">8</span>
+        </div>
+      </div>
     </div>
   </section>
 
 </div>
+
+<!-- Link to external JavaScript -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+
 {% endblock %}

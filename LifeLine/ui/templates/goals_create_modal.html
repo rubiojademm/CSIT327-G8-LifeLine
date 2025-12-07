@@ -1,64 +1,142 @@
-<!-- CREATE GOAL MODAL -->
+<!-- ============================================
+     CREATE GOAL MODAL - HTML
+     Modern modal for creating new goals
+     ============================================ -->
+
 <div id="createGoalModal" class="goal-overlay hidden">
-  <div class="modal">
+  <div class="modal create-goal-modal">
     
-    <div class="modal-header">
-      <h2>Create New Goal</h2>
-      <p class="muted">Set a new goal to track your progress.</p>
+    <!-- Close Button -->
+    <button type="button" class="modal-close" onclick="closeCreateGoalModal()" aria-label="Close modal">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Modal Icon -->
+    <div class="modal-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <circle cx="12" cy="12" r="6"></circle>
+        <circle cx="12" cy="12" r="2"></circle>
+      </svg>
     </div>
 
-    <form method="POST" action="{% url 'create_goal' %}" class="space-y-4">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2>Create New Goal</h2>
+      <p class="muted">Set a new goal to track your progress and achieve greatness.</p>
+    </div>
+
+    <!-- Modal Form -->
+    <form method="POST" action="{% url 'create_goal' %}" class="modal-form">
       {% csrf_token %}
 
-      <!-- Title -->
+      <!-- Title Field -->
       <div class="form-group">
-        <label for="title">Goal Title *</label>
+        <label for="title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
+          </svg>
+          Goal Title *
+        </label>
         <input 
           type="text" 
           id="title" 
           name="title" 
           placeholder="e.g., Learn a new language" 
           required
+          autocomplete="off"
         >
+        <span class="input-hint">Give your goal a clear, actionable name</span>
       </div>
 
-      <!-- Description -->
+      <!-- Description Field -->
       <div class="form-group">
-        <label for="description">Description</label>
+        <label for="description">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Description
+        </label>
         <textarea 
           id="description" 
           name="description" 
-          rows="3" 
-          placeholder="Describe what you want to achieve..."
+          rows="4" 
+          placeholder="Describe what you want to achieve and why it matters to you..."
         ></textarea>
+        <span class="input-hint">Optional: Add context to motivate yourself</span>
       </div>
 
-      <!-- Category -->
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select name="category" id="category">
-          <option value="">Select a category</option>
-          <option>Personal Development</option>
-          <option>Health & Fitness</option>
-          <option>Learning</option>
-          <option>Career</option>
-          <option>Finance</option>
-          <option>Relationships</option>
-          <option>Hobbies</option>
-          <option>Travel</option>
-          <option>Other</option>
-        </select>
+      <!-- Two-Column Layout -->
+      <div class="form-row">
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Category
+          </label>
+          <div class="select-wrapper">
+            <select name="category" id="category">
+              <option value="">Select a category</option>
+              <option value="Personal Development">📚 Personal Development</option>
+              <option value="Health & Fitness">💪 Health & Fitness</option>
+              <option value="Learning">🎓 Learning</option>
+              <option value="Career">💼 Career</option>
+              <option value="Finance">💰 Finance</option>
+              <option value="Relationships">❤️ Relationships</option>
+              <option value="Hobbies">🎨 Hobbies</option>
+              <option value="Travel">✈️ Travel</option>
+              <option value="Other">📌 Other</option>
+            </select>
+            <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Target Date Field -->
+        <div class="form-group">
+          <label for="target_date">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Target Date
+          </label>
+          <input type="date" id="target_date" name="target_date">
+          <span class="input-hint">Optional deadline</span>
+        </div>
       </div>
 
-      <!-- Target Date -->
-      <div class="form-group">
-        <label for="target_date">Target Date (Optional)</label>
-        <input type="date" id="target_date" name="target_date">
-      </div>
-
+      <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn-outline" onclick="closeCreateGoalModal()">Cancel</button>
-        <button type="submit" class="btn-primary">Create Goal</button>
+        <button type="button" class="btn-secondary" onclick="closeCreateGoalModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <span>Cancel</span>
+        </button>
+        <button type="submit" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>Create Goal</span>
+        </button>
       </div>
     </form>
   </div>
