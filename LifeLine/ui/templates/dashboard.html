@@ -44,29 +44,23 @@
   <section class="two-grid">
     <!-- Recent Goals -->
     <div class="card">
-      <h3>Recent Achievements</h3>
-
-      {% if recent_achievements %}
-        {% for achievement in recent_achievements %}
-          <div class="achievement-item">
-            <div class="icon">🏆</div>
-            <div>
-              <p class="achievement-title">
-                {{ achievement.milestone.title }}
-              </p>
-              <p class="achievement-date">
-                {{ achievement.updated_at|date:"M d, Y" }}
-              </p>
+      <h3>Recent Goals</h3>
+      {% if recent_goals %}
+        {% for goal in recent_goals %}
+          <div class="goal-item">
+            <div class="goal-header">
+              <span>{{ goal.title }}</span>
+              <span class="goal-status {{ goal.status|slugify }}">{{ goal.status }}</span>
             </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: {{ goal.progress|default:0 }}%;"></div>
+            </div>
+            <small>{{ goal.progress }}% complete</small>
           </div>
         {% endfor %}
       {% else %}
-        <p class="empty-state">No achievements unlocked yet.</p>
+        <p class="empty-state">No goals yet. Create your first goal to get started!</p>
       {% endif %}
-
-      <a href="/goals/milestones/">
-        <button class="view-all-btn">View All Achievements</button>
-      </a>
     </div>
 
     <!-- Recent Achievements -->
