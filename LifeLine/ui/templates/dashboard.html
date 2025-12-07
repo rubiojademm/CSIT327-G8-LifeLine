@@ -34,9 +34,9 @@
     </div>
 
     <div class="stat-card">
-      <h4>Current Streak</h4>
-      <p class="stat-value">{{ stats.streak }} days</p>
-      <span class="stat-note">Keep it going!</span>
+      <h4>Achievements</h4>
+      <p class="stat-value">{{ stats.achievements }}</p>
+      <span class="stat-note">Total unlocked</span>
     </div>
   </section>
 
@@ -44,38 +44,56 @@
   <section class="two-grid">
     <!-- Recent Goals -->
     <div class="card">
-      <h3>Recent Goals</h3>
-      {% if recent_goals %}
-        {% for goal in recent_goals %}
-          <div class="goal-item">
-            <div class="goal-header">
-              <span>{{ goal.title }}</span>
-              <span class="goal-status {{ goal.status|slugify }}">{{ goal.status }}</span>
+      <h3>Recent Achievements</h3>
+
+      {% if recent_achievements %}
+        {% for achievement in recent_achievements %}
+          <div class="achievement-item">
+            <div class="icon">🏆</div>
+            <div>
+              <p class="achievement-title">
+                {{ achievement.milestone.title }}
+              </p>
+              <p class="achievement-date">
+                {{ achievement.updated_at|date:"M d, Y" }}
+              </p>
             </div>
-            <div class="progress-bar">
-              <div class="progress" style="width: {{ goal.progress|default:0 }}%;"></div>
-            </div>
-            <small>{{ goal.progress }}% complete</small>
           </div>
         {% endfor %}
       {% else %}
-        <p class="empty-state">No goals yet. Create your first goal to get started!</p>
+        <p class="empty-state">No achievements unlocked yet.</p>
       {% endif %}
+
+      <a href="/goals/milestones/">
+        <button class="view-all-btn">View All Achievements</button>
+      </a>
     </div>
 
     <!-- Recent Achievements -->
     <div class="card">
       <h3>Recent Achievements</h3>
-      {% for achievement in recent_achievements %}
-        <div class="achievement-item">
-          <div class="icon">🏆</div>
-          <div>
-            <p class="achievement-title">{{ achievement.title }}</p>
-            <p class="achievement-date">{{ achievement.date }}</p>
+
+      {% if recent_achievements %}
+        {% for achievement in recent_achievements %}
+          <div class="achievement-item">
+            <div class="icon">🏆</div>
+            <div>
+              <p class="achievement-title">
+                {{ achievement.milestone.title }}
+              </p>
+              <p class="achievement-date">
+                {{ achievement.unlocked_at|date:"M d, Y" }}
+              </p>
+            </div>
           </div>
-        </div>
-      {% endfor %}
-      <button class="view-all-btn">View All Achievements</button>
+        {% endfor %}
+      {% else %}
+        <p class="empty-state">No achievements unlocked yet.</p>
+      {% endif %}
+
+      <a href="{% url 'milestones_page' %}">
+        <button class="view-all-btn">View All Achievements</button>
+      </a>
     </div>
   </section>
 

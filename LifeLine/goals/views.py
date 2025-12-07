@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
@@ -13,32 +14,69 @@ from .models import Milestone, UserMilestone
 # DASHBOARD PAGE #
 @login_required
 def dashboard(request):
-    user_goals = Goal.objects.filter(user=request.user)
+    user = request.user
+    user_goals = Goal.objects.filter(user=user)
 
+    # -------------------------------
+    # GOAL STATS
+    # -------------------------------
     total_goals = user_goals.count()
     completed_goals = user_goals.filter(status="Completed").count()
     in_progress_goals = user_goals.filter(status="In Progress").count()
     not_started_goals = user_goals.filter(status="Not Started").count()
 
-    # Compute completion rate safely
     completion_rate = (completed_goals / total_goals) * 100 if total_goals > 0 else 0
 
-    # Get recent goals (latest 3)
+    # -------------------------------
+    # RECENT GOALS
+    # -------------------------------
     recent_goals = user_goals.order_by('-created_at')[:3]
 
+    # -------------------------------
+    # USER ACHIEVEMENTS ✅ (FIXED)
+    # -------------------------------
+    user_achievements = UserMilestone.objects.filter(
+        user=user,
+        unlocked=True
+    )
+
+    achievements_count = user_achievements.count()
+
+    recent_achievements = user_achievements.select_related("milestone") \
+                                           .order_by('-unlocked_at')[:3]
+
+    # -------------------------------
+    # STREAK CALCULATION ✅ (FIXED)
+    # -------------------------------
+    streak = 0
+    today = timezone.now().date()
+
+    completion_dates = user_achievements.values_list("unlocked_at", flat=True)
+    completion_set = set([d.date() for d in completion_dates if d])
+
+    while today in completion_set:
+        streak += 1
+        today -= timedelta(days=1)
+
+    # -------------------------------
+    # FINAL STATS
+    # -------------------------------
     stats = {
         "total_goals": total_goals,
         "completed_goals": completed_goals,
         "in_progress_goals": in_progress_goals,
         "not_started_goals": not_started_goals,
-        "streak": 0,  # You can calculate a streak later if needed
+        "achievements": achievements_count,
+        "streak": streak,
         "completion_rate": round(completion_rate),
     }
 
     context = {
         "stats": stats,
         "recent_goals": recent_goals,
+        "recent_achievements": recent_achievements,
     }
+
     return render(request, "dashboard.html", context)
 
 
