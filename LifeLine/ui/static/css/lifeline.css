@@ -1,3 +1,13 @@
+/* =========================
+   NAVBAR – GLOBAL FONT SETTINGS
+========================= */
+
+/* Easy access variables for navbar font */
+:root {
+  --navbar-font-family: 'Poppins', sans-serif; /* change font for navbar here */
+  --navbar-font-size: 0.95rem; /* change font size for navbar here */
+}
+
 /* ====== BASE ====== */
 body {
   background: #f6fff6;
@@ -29,6 +39,8 @@ body {
   padding: 0 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  font-family: var(--navbar-font-family);
+  font-size: var(--navbar-font-size);
 }
 
 /* ====== LOGO ====== */
@@ -49,11 +61,12 @@ body {
 }
 
 .logo-text {
-  font-size: 1.3rem;
+  font-size: 1.3rem; /* logo slightly larger than links */
   font-weight: 700;
   background: linear-gradient(135deg, #27ae60, #2ecc71);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-family: var(--navbar-font-family);
 }
 
 /* ====== LINKS ====== */
@@ -70,9 +83,11 @@ body {
   padding: 0.4rem 1rem;
   border-radius: 6px;
   transition: all 0.25s ease;
+  font-family: var(--navbar-font-family);
+  font-size: var(--navbar-font-size);
 }
 
-/* Active or hover (general links only) */
+/* Active or hover for logout */
 .navbar .logout-link:hover {
   background: #dc3545 !important;
   color: #fff !important;
@@ -92,6 +107,8 @@ a.disabled {
   padding: 0.4rem 1rem;
   border-radius: 6px;
   font-weight: 500;
+  font-family: var(--navbar-font-family);
+  font-size: var(--navbar-font-size);
   transition: all 0.25s ease;
 }
 
@@ -100,6 +117,12 @@ a.disabled {
   background: #dc3545;
   color: #fff;
   box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+/* Navbar buttons */
+.navbar button {
+  font-family: var(--navbar-font-family);
+  font-size: var(--navbar-font-size);
 }
 
 /* ====== LOGOUT MODAL ====== */
