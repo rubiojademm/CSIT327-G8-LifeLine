@@ -9,7 +9,6 @@
     <p>Manage registered users</p>
   </div>
 
-  <!-- MESSAGES AREA -->
   {% if messages %}
     <div class="messages-container">
       {% for message in messages %}
@@ -21,6 +20,7 @@
   {% endif %}
 
   <div class="dashboard-content">
+
     <div class="search-bar-container">
       <form method="get" action="" class="search-bar-form">
         <input 
@@ -33,16 +33,16 @@
         <button type="submit" class="btn-small search">Search</button>
       </form>
     </div>
-    {% if query %}
-        <p style="margin-top: -1rem; color: #2e7d32; font-weight: 500;">
-        Showing {{ user_count }} result{{ user_count|pluralize }} for "<strong>{{ query }}</strong>"
-        </p>
-    {% else %}
-        <p style="margin-top: -1rem; color: #777;">
-        Showing all {{ user_count }} users
-        </p>
-    {% endif %}
 
+    {% if query %}
+      <p style="margin-top: -1rem; color: #2e7d32; font-weight: 500;">
+        Showing {{ user_count }} result{{ user_count|pluralize }} for "<strong>{{ query }}</strong>"
+      </p>
+    {% else %}
+      <p style="margin-top: -1rem; color: #777;">
+        Showing all {{ user_count }} users
+      </p>
+    {% endif %}
 
     <table class="user-table">
       <thead>
@@ -55,12 +55,14 @@
           <th>Actions</th>
         </tr>
       </thead>
+
       <tbody>
         {% for user in users %}
         <tr>
           <td>{{ user.id }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
+
           <td>
             {% if user.is_staff %}
               <span class="badge staff">Yes</span>
@@ -68,6 +70,7 @@
               <span class="badge non-staff">No</span>
             {% endif %}
           </td>
+
           <td>
             {% if user.is_active %}
               <span class="badge active">Active</span>
@@ -75,35 +78,38 @@
               <span class="badge inactive">Inactive</span>
             {% endif %}
           </td>
+
           <td>
+
+            <!-- ✅ VIEW GOALS BUTTON (NOW A REAL BUTTON) -->
+            <a href="{% url 'admin_user_goals' user.id %}" class="btn-small view">
+              View Goals
+            </a>
+
             {% if user.id == request.user.id %}
-                <!-- Disabled buttons for the logged-in user -->
-                <button class="btn-small deactivate" disabled style="opacity: 0.5; cursor: not-allowed;">
-                  Deactivate
-                </button>
-                <button class="btn-small delete" disabled style="opacity: 0.5; cursor: not-allowed;">
+              <button class="btn-small deactivate" disabled>Deactivate</button>
+              <button class="btn-small delete" disabled>Delete</button>
+            {% else %}
+              <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                {% if user.is_active %}
+                  <button type="submit" name="action" value="deactivate" class="btn-small deactivate">
+                    Deactivate
+                  </button>
+                {% else %}
+                  <button type="submit" name="action" value="activate" class="btn-small activate">
+                    Activate
+                  </button>
+                {% endif %}
+
+                <button type="submit" name="action" value="delete" class="btn-small delete">
                   Delete
                 </button>
-            {% else %}
-                <form method="post" style="display:inline;">
-                  {% csrf_token %}
-                  <input type="hidden" name="user_id" value="{{ user.id }}">
-
-                  {% if user.is_active %}
-                    <button type="submit" name="action" value="deactivate" class="btn-small deactivate">
-                      Deactivate
-                    </button>
-                  {% else %}
-                    <button type="submit" name="action" value="activate" class="btn-small activate">
-                      Activate
-                    </button>
-                  {% endif %}
-
-                  <button type="submit" name="action" value="delete" class="btn-small delete">
-                    Delete
-                  </button>
-                </form>
+              </form>
             {% endif %}
+
           </td>
         </tr>
         {% empty %}
@@ -112,7 +118,9 @@
         </tr>
         {% endfor %}
       </tbody>
+
     </table>
   </div>
 </div>
+
 {% endblock %}

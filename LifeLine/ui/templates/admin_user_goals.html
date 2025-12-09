@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>{{ selected_user.username }}’s Goals</h1>
+    <p>Admin goal management</p>
+    <a href="{% url 'admin_dashboard' %}" class="btn-small view">← Back</a>
+  </div>
+
+  {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Progress</th>
+        <th>Created</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for goal in goals %}
+      <tr>
+        <td>{{ goal.title }}</td>
+        <td>{{ goal.category }}</td>
+        <td>{{ goal.status }}</td>
+        <td>{{ goal.progress }}%</td>
+        <td>{{ goal.created_at|date:"M d, Y" }}</td>
+        <td>
+          <a
+            href="{% url 'admin_delete_goal' goal.id %}"
+            class="btn-small delete"
+            onclick="return confirm('Delete this goal permanently?');"
+          >
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;">No goals found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

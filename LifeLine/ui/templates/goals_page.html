@@ -79,13 +79,29 @@
       <p>No goals found.</p>
     </div>
   {% endif %}
-
 </div>
+
+<!-- ✅ Achievement Toast Notification -->
+{% if messages %}
+  <div id="toast-container">
+    {% for message in messages %}
+      <div class="toast toast-success">
+        <span class="toast-icon">🏆</span>
+        <span class="toast-text">{{ message }}</span>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 {% include "goals_update_modal.html" %}
 {% include "goals_create_modal.html" %}
 {% endblock %}
 
 {% block scripts %}
+<script>
+  setTimeout(() => {
+    document.querySelectorAll(".toast").forEach(t => t.remove());
+  }, 4200);
+</script>
 <script src="{% static 'js/goals_modal.js' %}" defer></script>
 {% endblock %}
