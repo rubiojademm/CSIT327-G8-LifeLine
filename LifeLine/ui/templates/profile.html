@@ -4,16 +4,16 @@
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 
 <div class="profile-container">
-  <div class="header">
+  <div class="profile-header">
     <div>
       <h2>Profile</h2>
       <p class="subtitle">Manage your account settings and preferences</p>
     </div>
-    <button id="editBtn" class="outline-btn">Edit Profile</button>
+    <button id="editBtn" class="btn-outline">Edit Profile</button>
   </div>
 
-  <div class="profile-grid">
-    <!-- Left Column: Profile Info -->
+  <div class="profile-grid single">
+    <!-- Profile Info FULL WIDTH -->
     <div class="card profile-card">
       <div class="card-header">
         <h3>Personal Information</h3>
@@ -21,37 +21,28 @@
       </div>
 
       <div class="card-body">
-        <!-- <div class="avatar-section">
-          {% if profile.avatar %}
-          <img src="{{ profile.avatar.url }}" alt="Avatar" class="avatar" />
-          {% else %}
-          <div class="avatar-placeholder">
-            {{ user.username|first|upper }}
-          </div>
-          {% endif %}
-        </div> -->
 
-        <!-- View Mode -->
+        <!-- VIEW MODE -->
         <div id="viewMode" class="info-section">
           <h3 class="username">{{ user.username }}</h3>
           <p class="user-info"><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
           <p class="user-info"><strong>Email:</strong> {{ user.email }}</p>
           <p class="user-info"><strong>Location:</strong> {{ profile.location|default:"Not specified" }}</p>
           <p class="user-info"><strong>Bio:</strong> {{ profile.bio|default:"No bio yet." }}</p>
-        {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-              {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-        {% endif %}
+
+          {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
         </div>
 
-        <!-- Edit Mode -->
+        <!-- EDIT MODE -->
         <form id="editMode" method="POST" class="info-section edit-form" style="display:none;">
           {% csrf_token %}
+
           <div class="form-group">
             <label>Username</label>
             <input type="text" name="username" value="{{ user.username }}" required />
@@ -62,7 +53,6 @@
               <label>First Name</label>
               <input type="text" name="first_name" value="{{ user.first_name }}" />
             </div>
-
             <div class="form-group half">
               <label>Last Name</label>
               <input type="text" name="last_name" value="{{ user.last_name }}" />
@@ -85,40 +75,11 @@
           </div>
 
           <div class="button-row">
-            <button type="submit" class="save-btn">Save Changes</button>
-            <button type="button" id="cancelBtn" class="outline-btn">Cancel</button>
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="button" id="cancelBtn" class="btn-outline">Cancel</button>
           </div>
         </form>
-      </div>
-    </div>
 
-    <!-- Right Column: Stats & Achievements -->
-    <div class="side-column">
-      <div class="card small-card">
-        <div class="card-header">
-          <h3>Your Stats</h3>
-        </div>
-        <div class="card-body">
-          <ul class="stats-list">
-            {% for label, value in stats.items %}
-            <li><span>{{ label }}</span><strong>{{ value }}</strong></li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="card small-card">
-        <div class="card-header">
-          <h3>Achievements</h3>
-          <p>Your earned badges and milestones</p>
-        </div>
-        <div class="card-body">
-          <div class="badges">
-            {% for achievement in achievements %}
-            <span class="badge">{{ achievement }}</span>
-            {% endfor %}
-          </div>
-        </div>
       </div>
     </div>
   </div>
