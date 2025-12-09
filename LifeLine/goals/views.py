@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from datetime import timedelta
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
 from django.db.models import Count
@@ -120,21 +123,37 @@ def goals_page(request):
 @login_required
 def create_goal(request):
     if request.method == "POST":
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        category = request.POST.get("category")
+        title = request.POST.get("title", "").strip()
+        description = request.POST.get("description", "").strip()
+        category = request.POST.get("category", "").strip()
         target_date = request.POST.get("target_date")
+
+        # HARD VALIDATION
+        if not title or not description or not category:
+            return redirect("goals_page")
+
+        # SAFE DATE CHECK
+        parsed_date = None
+        if target_date:
+            try:
+                parsed_date = timezone.datetime.strptime(target_date, "%Y-%m-%d").date()
+                today = timezone.now().date()
+                max_date = today + timedelta(days=365)
+
+                if parsed_date < today or parsed_date > max_date:
+                    parsed_date = None
+            except:
+                parsed_date = None
 
         Goal.objects.create(
             user=request.user,
             title=title,
             description=description,
             category=category,
-            target_date=target_date if target_date else None
+            target_date=parsed_date
         )
-        return redirect("goals_page")
 
-    return render(request, "create_goal.html")
+        return redirect("goals_page")
 
 
 @login_required
@@ -142,11 +161,37 @@ def update_progress(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
 
     if request.method == "POST":
-        new_progress = int(request.POST.get("progress", goal.progress))
+        # Update goal progress safely
+        try:
+            new_progress = int(request.POST.get("progress", goal.progress))
+        except ValueError:
+            new_progress = goal.progress
 
-        # Clamp between 0 and 100
         goal.progress = max(0, min(100, new_progress))
         goal.save()
+
+        # Check for newly unlocked milestones
+        unlocked = UserMilestone.objects.filter(
+            user=request.user,
+            unlocked=False,
+            milestone__milestone_type="progress",
+            milestone__required_value__lte=goal.progress
+        )
+
+        # If the milestone has a category, match it with the goal's category
+        unlocked = unlocked.filter(
+            Q(milestone__category=goal.category) | Q(milestone__category__isnull=True)
+        )
+
+        # Unlock the milestones and show messages
+        for um in unlocked:
+            um.unlocked = True
+            um.unlocked_at = timezone.now()
+            um.save()
+            messages.success(
+                request,
+                f"🏆 Achievement Unlocked: {um.milestone.title}"
+            )
 
     return redirect("goals_page")
 
@@ -242,3 +287,36 @@ def report_completions(request):
             "pending": pending,
         }
     )
+
+
+# =============================
+# ADMIN – VIEW USER GOALS
+# =============================
+@staff_member_required
+def admin_user_goals(request, user_id):
+    selected_user = get_object_or_404(User, id=user_id)
+    goals = Goal.objects.filter(user=selected_user).order_by("-created_at")
+
+    return render(request, "admin_user_goals.html", {
+        "selected_user": selected_user,
+        "goals": goals,
+    })
+
+
+# =============================
+# ADMIN – DELETE USER GOAL
+# =============================
+@staff_member_required
+def admin_delete_goal(request, goal_id):
+    goal = get_object_or_404(Goal, id=goal_id)
+    username = goal.user.username
+    goal_title = goal.title
+
+    goal.delete()
+
+    messages.success(
+        request,
+        f"Deleted goal '{goal_title}' from user '{username}'."
+    )
+
+    return redirect("admin_dashboard")

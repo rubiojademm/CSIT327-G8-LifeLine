@@ -1,64 +1,53 @@
-<!-- CREATE GOAL MODAL -->
-<div id="createGoalModal" class="goal-overlay hidden">
+<div class="goal-overlay hidden" id="createGoalModal">
   <div class="modal">
-    
     <div class="modal-header">
-      <h2>Create New Goal</h2>
-      <p class="muted">Set a new goal to track your progress.</p>
+      <h2>Create Goal</h2>
+      <p class="muted">Fill in all required fields</p>
     </div>
 
-    <form method="POST" action="{% url 'create_goal' %}" class="space-y-4">
+    <form method="POST" action="{% url 'create_goal' %}">
       {% csrf_token %}
 
-      <!-- Title -->
       <div class="form-group">
-        <label for="title">Goal Title *</label>
-        <input 
-          type="text" 
-          id="title" 
-          name="title" 
-          placeholder="e.g., Learn a new language" 
-          required
-        >
+        <label>Title</label>
+        <input type="text" name="title" required placeholder="Enter goal title">
       </div>
 
-      <!-- Description -->
       <div class="form-group">
-        <label for="description">Description</label>
-        <textarea 
-          id="description" 
-          name="description" 
-          rows="3" 
-          placeholder="Describe what you want to achieve..."
-        ></textarea>
+        <label>Description</label>
+        <textarea name="description" required placeholder="Describe your goal"></textarea>
       </div>
 
-      <!-- Category -->
       <div class="form-group">
-        <label for="category">Category</label>
-        <select name="category" id="category">
-          <option value="">Select a category</option>
-          <option>Personal Development</option>
-          <option>Health & Fitness</option>
-          <option>Learning</option>
-          <option>Career</option>
-          <option>Finance</option>
-          <option>Relationships</option>
-          <option>Hobbies</option>
-          <option>Travel</option>
-          <option>Other</option>
+        <label>Category</label>
+        <select name="category" required>
+          <option value="" disabled selected>Select category</option>
+          <option value="Personal Development">Personal Development</option>
+          <option value="Health & Fitness">Health & Fitness</option>
+          <option value="Learning">Learning</option>
+          <option value="Career">Career</option>
+          <option value="Finance">Finance</option>
+          <option value="Relationships">Relationships</option>
+          <option value="Hobbies">Hobbies</option>
+          <option value="Travel">Travel</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
-      <!-- Target Date -->
       <div class="form-group">
-        <label for="target_date">Target Date (Optional)</label>
-        <input type="date" id="target_date" name="target_date">
+        <label>Target Date</label>
+        <input 
+          type="date" 
+          name="target_date"
+          min="{{ today|date:'Y-m-d' }}"
+          max="{{ max_date|date:'Y-m-d' }}"
+        >
+        <small class="date-sm"></small>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn-outline" onclick="closeCreateGoalModal()">Cancel</button>
-        <button type="submit" class="btn-primary">Create Goal</button>
+        <button type="submit" class="btn-primary">Save Goal</button>
       </div>
     </form>
   </div>
