@@ -3,11 +3,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
 <div class="dashboard-container">
 
   <!-- Welcome Section -->
   <section class="welcome-card">
-    <h2>Welcome back!</h2>
+    <h2>Welcome back, {{ request.user.first_name|default:request.user.username }}!</h2>
     <p>You're making great progress on your journey. Keep it up!</p>
   </section>
 
@@ -22,9 +23,7 @@
     <div class="stat-card">
       <h4>Completed</h4>
       <p class="stat-value">{{ stats.completed_goals }}</p>
-      <span class="stat-note">
-          {{ stats.completion_rate }}% completion rate
-      </span>
+      <span class="stat-note">{{ stats.completion_rate }}% completion rate</span>
     </div>
 
     <div class="stat-card">
@@ -34,9 +33,9 @@
     </div>
 
     <div class="stat-card">
-      <h4>Achievements</h4>
+      <h4>Total Achievements</h4>
       <p class="stat-value">{{ stats.achievements }}</p>
-      <span class="stat-note">Total unlocked</span>
+      <span class="stat-note">Unlocked</span>
     </div>
   </section>
 
@@ -61,30 +60,27 @@
       {% else %}
         <p class="empty-state">No goals yet. Create your first goal to get started!</p>
       {% endif %}
+      <a href="{% url 'goals_page' %}">
+        <button class="view-all-btn">View All Goals</button>
+      </a>
     </div>
 
     <!-- Recent Achievements -->
     <div class="card">
       <h3>Recent Achievements</h3>
-
       {% if recent_achievements %}
         {% for achievement in recent_achievements %}
           <div class="achievement-item">
             <div class="icon">🏆</div>
             <div>
-              <p class="achievement-title">
-                {{ achievement.milestone.title }}
-              </p>
-              <p class="achievement-date">
-                {{ achievement.unlocked_at|date:"M d, Y" }}
-              </p>
+              <p class="achievement-title">{{ achievement.milestone.title }}</p>
+              <p class="achievement-date">{{ achievement.unlocked_at|date:"M d, Y" }}</p>
             </div>
           </div>
         {% endfor %}
       {% else %}
         <p class="empty-state">No achievements unlocked yet.</p>
       {% endif %}
-
       <a href="{% url 'milestones_page' %}">
         <button class="view-all-btn">View All Achievements</button>
       </a>

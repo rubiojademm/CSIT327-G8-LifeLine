@@ -93,6 +93,7 @@ def goals_page(request):
     search = request.GET.get("search", "")
     category = request.GET.get("category", "All")
     status = request.GET.get("status", "All")
+    sort = request.GET.get("sort", "")
 
     if search:
         goals = goals.filter(
@@ -106,7 +107,21 @@ def goals_page(request):
     if status != "All":
         goals = goals.filter(status=status)
 
-    categories = ["All"] + list(goals.values_list("category", flat=True).distinct())
+    if sort == "date_asc":
+        goals = goals.order_by("created_at")
+    elif sort == "date_desc":
+        goals = goals.order_by("-created_at")
+    elif sort == "progress_asc":
+        goals = goals.order_by("progress")
+    elif sort == "progress_desc":
+        goals = goals.order_by("-progress")
+    else:
+        # default ordering
+        goals = goals.order_by("-created_at")
+
+    # categories = ["All"] + list(goals.values_list("category", flat=True).distinct())
+    all_categories = [c[0] for c in Goal._meta.get_field('category').choices]
+    categories = ["All"] + all_categories
     statuses = ["All", "Not Started", "In Progress", "Completed"]
 
     context = {
@@ -153,6 +168,7 @@ def create_goal(request):
             target_date=parsed_date
         )
 
+        messages.success(request, f"Goal '{title}' created successfully!")
         return redirect("goals_page")
 
 
@@ -161,7 +177,7 @@ def update_progress(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
 
     if request.method == "POST":
-        # Update goal progress safely
+        # 1️⃣ Update goal progress safely
         try:
             new_progress = int(request.POST.get("progress", goal.progress))
         except ValueError:
@@ -170,7 +186,12 @@ def update_progress(request, pk):
         goal.progress = max(0, min(100, new_progress))
         goal.save()
 
-        # Check for newly unlocked milestones
+        # 2️⃣ Ensure all UserMilestone rows exist for this user
+        milestones = Milestone.objects.filter(milestone_type="progress")
+        for milestone in milestones:
+            UserMilestone.objects.get_or_create(user=request.user, milestone=milestone)
+
+        # 3️⃣ Find milestones that should be unlocked
         unlocked = UserMilestone.objects.filter(
             user=request.user,
             unlocked=False,
@@ -178,19 +199,19 @@ def update_progress(request, pk):
             milestone__required_value__lte=goal.progress
         )
 
-        # If the milestone has a category, match it with the goal's category
+        # Match by category (case-insensitive) or if milestone has no category
         unlocked = unlocked.filter(
-            Q(milestone__category=goal.category) | Q(milestone__category__isnull=True)
+            Q(milestone__category__iexact=goal.category) | Q(milestone__category__isnull=True)
         )
 
-        # Unlock the milestones and show messages
+        # 4️⃣ Unlock milestones and show toast messages
         for um in unlocked:
             um.unlocked = True
             um.unlocked_at = timezone.now()
             um.save()
             messages.success(
                 request,
-                f"🏆 Achievement Unlocked: {um.milestone.title}"
+                f"Achievement Unlocked: {um.milestone.title}"
             )
 
     return redirect("goals_page")
