@@ -3,66 +3,79 @@
   margin: 0 auto;
   padding: 2rem;
   color: #1f2937; /* neutral dark text */
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* Welcome banner */
 .welcome-card {
   background: linear-gradient(135deg, #16a34a, #22c55e); /* green gradient */
   color: white;
-  padding: 1.5rem;
-  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
   margin-bottom: 2rem;
-  box-shadow: 0 3px 10px rgba(22, 163, 74, 0.25);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.welcome-card:hover {
+  transform: translateY(-2px);
 }
 
 /* Stats section */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.2rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .stat-card {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stat-value {
   font-size: 2rem;
-  font-weight: bold;
-  color: #16a34a; /* main green */
+  font-weight: 700;
+  color: #16a34a; /* green */
   margin: 0.5rem 0;
 }
 
 .stat-note {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
 /* Two-column layout for goals and achievements */
 .two-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
+/* Card styling */
 .card {
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .card h3 {
@@ -73,29 +86,27 @@
 /* Goal items */
 .goal-item {
   margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .goal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 4px;
 }
 
 .goal-status {
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 0.8rem;
+  font-weight: 500;
   color: white;
 }
 
-.goal-status.completed {
-  background-color: #16a34a; /* green for completed */
-}
-
-.goal-status.in-progress {
-  background-color: #facc15; /* yellow for ongoing */
-  color: #333;
-}
+.goal-status.completed { background-color: #16a34a; }
+.goal-status.in-progress { background-color: #facc15; color: #333; }
 
 /* Progress bar */
 .progress-bar {
@@ -103,13 +114,15 @@
   height: 6px;
   background: #e5e7eb;
   border-radius: 4px;
-  margin-top: 6px;
   overflow: hidden;
+  margin-bottom: 4px;
 }
 
 .progress {
   height: 100%;
   background: linear-gradient(90deg, #16a34a, #22c55e);
+  border-radius: 4px;
+  transition: width 0.4s ease;
 }
 
 /* Achievements */
@@ -117,7 +130,7 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.6rem;
+  padding: 0.6rem 0;
   border-bottom: 1px solid #f1f1f1;
 }
 
@@ -126,7 +139,7 @@
   color: #16a34a;
 }
 
-/* View all button */
+/* View All buttons */
 .view-all-btn {
   width: 100%;
   padding: 8px;
@@ -137,17 +150,19 @@
   color: #16a34a;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .view-all-btn:hover {
   background: #16a34a;
   color: white;
+  transform: translateY(-1px);
 }
 
 /* Empty state */
 .empty-state {
   text-align: center;
   color: #6b7280;
-  padding: 1rem;
+  padding: 1rem 0.5rem;
+  font-style: italic;
 }

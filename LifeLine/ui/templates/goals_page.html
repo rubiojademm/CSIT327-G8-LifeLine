@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/goals_page.css' %}">
 
@@ -17,21 +18,28 @@
   <!-- Filters -->
   <div class="filters-card">
     <form method="GET" class="filters-grid">
-
       <input type="text" name="search" placeholder="Search goals..." value="{{ search }}" class="input"/>
 
       <!-- Category -->
       <select name="category" class="input">
         {% for c in categories %}
-        <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
+          <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
         {% endfor %}
       </select>
 
       <!-- Status -->
       <select name="status" class="input">
         {% for s in statuses %}
-        <option value="{{ s }}" {% if s == status %}selected{% endif %}>{{ s }}</option>
+          <option value="{{ s }}" {% if s == status %}selected{% endif %}>{{ s }}</option>
         {% endfor %}
+      </select>
+
+      <!-- Sort -->
+      <select name="sort" class="input">
+        <option value="date_asc" {% if request.GET.sort == 'date_asc' %}selected{% endif %}>Date ↑</option>
+        <option value="date_desc" {% if request.GET.sort == 'date_desc' %}selected{% endif %}>Date ↓</option>
+        <option value="progress_asc" {% if request.GET.sort == 'progress_asc' %}selected{% endif %}>Progress ↑</option>
+        <option value="progress_desc" {% if request.GET.sort == 'progress_desc' %}selected{% endif %}>Progress ↓</option>
       </select>
 
       <button class="btn-secondary">Apply</button>
@@ -67,7 +75,6 @@
       </div>
 
       <p class="date-sm">Created: {{ goal.created_at|date:"M j, Y" }}</p>
-
       {% if goal.target_date %} 
         <p class="date-sm">Target: {{ goal.target_date|date:"M j, Y" }}</p>
       {% endif %}
@@ -79,29 +86,37 @@
       <p>No goals found.</p>
     </div>
   {% endif %}
+
 </div>
 
-<!-- ✅ Achievement Toast Notification -->
-{% if messages %}
-  <div id="toast-container">
-    {% for message in messages %}
-      <div class="toast toast-success">
-        <span class="toast-icon">🏆</span>
-        <span class="toast-text">{{ message }}</span>
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+<!-- Toast Container -->
+<div id="toast-container"></div>
 
+<!-- Modals -->
 {% include "goals_update_modal.html" %}
 {% include "goals_create_modal.html" %}
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-  setTimeout(() => {
-    document.querySelectorAll(".toast").forEach(t => t.remove());
-  }, 4200);
+document.addEventListener('DOMContentLoaded', () => {
+    const toastContainer = document.getElementById('toast-container');
+
+    {% if messages %}
+        {% for message in messages %}
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-success';
+            toast.innerHTML = `<span class="toast-icon">🏆</span> <span class="toast-text">{{ message|escapejs }}</span>`;
+            toastContainer.appendChild(toast);
+
+            // Remove after 4.2 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 4200);
+        {% endfor %}
+    {% endif %}
+});
 </script>
 <script src="{% static 'js/goals_modal.js' %}" defer></script>
 {% endblock %}

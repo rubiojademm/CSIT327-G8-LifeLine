@@ -4,7 +4,7 @@
 
 /* Easy access variables for navbar font */
 :root {
-  --navbar-font-family: 'Poppins', sans-serif; /* change font for navbar here */
+  --navbar-font-family: "Segoe UI", sans-serif; /* change font for navbar here */
   --navbar-font-size: 0.95rem; /* change font size for navbar here */
 }
 
@@ -77,14 +77,33 @@ body {
 }
 
 .navbar a {
-  color: #333;
+  color: #424242;
   text-decoration: none;
   font-weight: 500;
   padding: 0.4rem 1rem;
   border-radius: 6px;
-  transition: all 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
   font-family: var(--navbar-font-family);
   font-size: var(--navbar-font-size);
+  position: relative;
+}
+
+.navbar a:hover:not(.logout-link) {
+  background: #e6f4ea;
+  color: #1b5e20;
+  transform: translateY(-1px);
+}
+
+.navbar a.active {
+  background: #dff6e0; 
+  color: #1b5e20;      
+  font-weight: 500;
+  transform: none;
+  box-shadow: none;   
+}
+
+.navbar a.active:hover {
+  background: #e6f4ea; 
 }
 
 /* Active or hover for logout */
